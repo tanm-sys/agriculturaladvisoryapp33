@@ -6,14 +6,14 @@ import {
   Legend,
   ResponsiveContainer,
   TooltipProps as RechartsTooltipProps,
-  Payload,
-  ValueType,
-  NameType,
 } from 'recharts'
 import * as RechartsPrimitive from 'recharts'
 import { cn } from '@/lib/utils'
 
-// Format: { THEME_NAME: CSS_SELECTOR }
+/* ------------------------------------------------------------------ */
+/* 1.  CONFIG & CONTEXT                                               */
+/* ------------------------------------------------------------------ */
+
 const THEMES = { light: '', dark: '.dark' } as const
 
 export type ChartConfig = {
@@ -26,29 +26,28 @@ export type ChartConfig = {
   )
 }
 
-type ChartContextProps = {
-  config: ChartConfig
-}
-
+type ChartContextProps = { config: ChartConfig }
 const ChartContext = React.createContext<ChartContextProps | null>(null)
 
 function useChart() {
-  const context = React.useContext(ChartContext)
-  if (!context) {
-    throw new Error('useChart must be used within a <ChartContainer />')
-  }
-  return context
+  const ctx = React.useContext(ChartContext)
+  if (!ctx) throw new Error('useChart must be used inside <ChartContainer>')
+  return ctx
 }
+
+/* ------------------------------------------------------------------ */
+/* 2.  CHART CONTAINER                                                */
+/* ------------------------------------------------------------------ */
 
 function ChartContainer({
   id,
   className,
   children,
   config,
-  ...props
+  ...divProps
 }: React.ComponentProps<'div'> & {
   config: ChartConfig
-  children: React.ComponentProps<typeof ResponsiveContainer>['children']
+  children: React.ReactNode
 }) {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`
@@ -62,7 +61,7 @@ function ChartContainer({
           "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
           className,
         )}
-        {...props}
+        {...divProps}
       >
         <ChartStyle id={chartId} config={config} />
         <ResponsiveContainer>{children}</ResponsiveContainer>
@@ -71,37 +70,36 @@ function ChartContainer({
   )
 }
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(
-    ([, config]) => config.theme || config.color,
-  )
+/* ------------------------------------------------------------------ */
+/* 3.  DYNAMIC CSS VARIABLES                                          */
+/* ------------------------------------------------------------------ */
 
+function ChartStyle({ id, config }: { id: string; config: ChartConfig }) {
+  const colorConfig = Object.entries(config).filter(
+    ([, c]) => c.theme || c.color,
+  )
   if (!colorConfig.length) return null
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
-  })
-  .filter(Boolean)
-  .join('\n')}
+  const css = Object.entries(THEMES)
+    .map(([theme, prefix]) => {
+      const lines = colorConfig
+        .map(([key, c]) => {
+          const color = c.theme?.[theme as keyof typeof c.theme] || c.color
+          return color ? `  --color-${key}: ${color};` : ''
+        })
+        .filter(Boolean)
+        .join('\n')
+      return lines ? `${prefix} [data-chart=${id}] {\n${lines}\n}` : ''
+    })
+    .filter(Boolean)
+    .join('\n')
+
+  return <style dangerouslySetInnerHTML={{ __html: css }} />
 }
-`,
-          )
-          .join('\n'),
-      }}
-    />
-  )
-}
+
+/* ------------------------------------------------------------------ */
+/* 4.  TOOLTIP                                                        */
+/* ------------------------------------------------------------------ */
 
 function ChartTooltipContent({
   active,
@@ -117,7 +115,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: RechartsTooltipProps<ValueType, NameType> &
+}: RechartsTooltipProps<number, string> &
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
     hideIndicator?: boolean
@@ -131,7 +129,7 @@ function ChartTooltipContent({
     if (hideLabel || !payload?.length) return null
 
     const [item] = payload
-    const key = `${labelKey || item?.dataKey || item?.name || 'value'}`
+    const key = `${labelKey || item.dataKey || item.name || 'value'}`
     const itemConfig = getPayloadConfigFromPayload(config, item, key)
     const value =
       !labelKey && typeof label === 'string'
@@ -145,9 +143,9 @@ function ChartTooltipContent({
         </div>
       )
     }
-
-    if (!value) return null
-    return <div className={cn('font-medium', labelClassName)}>{value}</div>
+    return value ? (
+      <div className={cn('font-medium', labelClassName)}>{value}</div>
+    ) : null
   }, [
     label,
     labelFormatter,
@@ -184,7 +182,7 @@ function ChartTooltipContent({
                 indicator === 'dot' && 'items-center',
               )}
             >
-              {formatter && item?.value !== undefined && item.name ? (
+              {formatter && item.value !== undefined && item.name ? (
                 formatter(item.value, item.name, item, index, item.payload)
               ) : (
                 <>
@@ -224,7 +222,7 @@ function ChartTooltipContent({
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
-                    {item.value && (
+                    {item.value != null && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
                         {item.value.toLocaleString()}
                       </span>
@@ -240,17 +238,22 @@ function ChartTooltipContent({
   )
 }
 
+/* ------------------------------------------------------------------ */
+/* 5.  LEGEND                                                         */
+/* ------------------------------------------------------------------ */
+
 function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
   verticalAlign = 'bottom',
   nameKey,
-}: React.ComponentProps<'div'> &
-  Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
-    hideIcon?: boolean
-    nameKey?: string
-  }) {
+}: React.ComponentProps<'div'> & {
+  hideIcon?: boolean
+  payload?: RechartsPrimitive.LegendProps['payload']
+  verticalAlign?: 'top' | 'bottom' | 'middle'
+  nameKey?: string
+}) {
   const { config } = useChart()
   if (!payload?.length) return null
 
@@ -289,9 +292,13 @@ function ChartLegendContent({
   )
 }
 
+/* ------------------------------------------------------------------ */
+/* 6.  HELPER                                                         */
+/* ------------------------------------------------------------------ */
+
 function getPayloadConfigFromPayload(
   config: ChartConfig,
-  payload: Payload<ValueType, NameType>,
+  payload: any,
   key: string,
 ): ChartConfig[string] | undefined {
   if (typeof payload !== 'object' || payload === null) return undefined
@@ -324,6 +331,10 @@ function getPayloadConfigFromPayload(
     ? config[configLabelKey]
     : config[key as keyof typeof config]
 }
+
+/* ------------------------------------------------------------------ */
+/* 7.  PUBLIC API                                                     */
+/* ------------------------------------------------------------------ */
 
 export {
   ChartContainer,
