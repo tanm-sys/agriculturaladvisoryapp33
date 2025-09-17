@@ -112,21 +112,27 @@ ${colorConfig
 const ChartTooltip = RechartsPrimitive.Tooltip
 
 function ChartTooltipContent({
+  active,
+  payload,
+  label,
+  labelFormatter,
+  labelClassName,
+  color, // Destructure color directly
   className,
   indicator = 'dot',
   hideLabel = false,
   hideIndicator = false,
   nameKey,
   labelKey,
-  ...rest // Contains active, payload, label, labelFormatter, etc. from TooltipProps, plus any HTMLDivElement props
+  ...props // Remaining HTMLDivElement props
 }: TooltipProps<ValueType, NameType> & React.ComponentProps<'div'> & {
   hideLabel?: boolean
   hideIndicator?: boolean
   indicator?: 'line' | 'dot' | 'dashed'
   nameKey?: string
   labelKey?: string
+  // labelClassName and color are already in TooltipProps, no need to redefine here
 }) {
-  const { active, payload, label, labelFormatter } = rest;
   const { config } = useChart()
 
   const tooltipLabel = React.useMemo(() => {
@@ -160,7 +166,7 @@ function ChartTooltipContent({
     labelFormatter,
     payload,
     hideLabel,
-    labelClassName,
+    labelClassName, // Now correctly referenced
     config,
     labelKey,
   ])
@@ -183,7 +189,7 @@ function ChartTooltipContent({
         {payload.map((item: Payload<ValueType, NameType>, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload?.fill || item.color
+          const indicatorColor = color || item.payload?.fill || item.color // Now color is correctly referenced
 
           return (
             <div
