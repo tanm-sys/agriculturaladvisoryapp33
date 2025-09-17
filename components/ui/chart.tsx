@@ -5,7 +5,6 @@ import * as RechartsPrimitive from 'recharts'
 import type {
   TooltipProps,
   LegendProps,
-  // Removed direct imports for Payload, NameType, ValueType as they were causing TS2305
 } from 'recharts'
 
 // Define local fallback types if Recharts does not export them directly in this environment
@@ -125,8 +124,8 @@ function ChartTooltipContent({
   hideIndicator = false,
   nameKey,
   labelKey,
-  labelClassName, // Destructure custom prop
-  color, // Destructure custom prop
+  labelClassName,
+  color,
   ...rest // Now only contains HTMLDivElement props
 }: TooltipProps<RechartsValueType, RechartsNameType> & React.ComponentProps<'div'> & {
   hideLabel?: boolean
@@ -134,8 +133,8 @@ function ChartTooltipContent({
   indicator?: 'line' | 'dot' | 'dashed'
   nameKey?: string
   labelKey?: string
-  labelClassName?: string // Add to custom props type
-  color?: string // Add to custom props type
+  labelClassName?: string
+  color?: string
 }) {
   const { config } = useChart()
 
@@ -170,7 +169,7 @@ function ChartTooltipContent({
     labelFormatter,
     payload,
     hideLabel,
-    labelClassName, // Added to dependency array
+    labelClassName,
     config,
     labelKey,
   ])
@@ -193,7 +192,7 @@ function ChartTooltipContent({
         {payload.map((item: RechartsPayload, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload?.fill || item.color // `color` is now in scope
+          const indicatorColor = color || item.payload?.fill || item.color
 
           return (
             <div
@@ -258,11 +257,11 @@ const ChartLegend = RechartsPrimitive.Legend
 function ChartLegendContent({
   className,
   hideIcon = false,
-  payload, // Destructure payload directly
+  payload,
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> & {
-  payload?: RechartsPayload[]; // Use local type
+  payload?: RechartsPayload[]; // Explicitly type payload
   verticalAlign?: LegendProps['verticalAlign'];
   hideIcon?: boolean;
   nameKey?: string;
@@ -281,7 +280,7 @@ function ChartLegendContent({
         className,
       )}
     >
-      {payload.map((item: RechartsPayload) => { // Use local type
+      {payload.map((item: RechartsPayload) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
