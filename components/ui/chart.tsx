@@ -5,10 +5,13 @@ import * as RechartsPrimitive from 'recharts'
 import type {
   TooltipProps,
   LegendProps,
-  Payload,
-  NameType,
-  ValueType,
+  // Removed direct imports for Payload, NameType, ValueType as they were causing TS2305
 } from 'recharts'
+
+// Define local fallback types if Recharts does not export them directly in this environment
+type RechartsValueType = any;
+type RechartsNameType = any;
+type RechartsPayload = any;
 
 import { cn } from '@/lib/utils'
 
@@ -112,21 +115,28 @@ ${colorConfig
 const ChartTooltip = RechartsPrimitive.Tooltip
 
 function ChartTooltipContent({
+  active,
+  payload,
+  label,
+  labelFormatter,
   className,
   indicator = 'dot',
   hideLabel = false,
   hideIndicator = false,
   nameKey,
   labelKey,
-  ...rest // Contains active, payload, label, labelFormatter, etc. from TooltipProps, plus any HTMLDivElement props
-}: TooltipProps<ValueType, NameType> & React.ComponentProps<'div'> & {
+  labelClassName, // Destructure custom prop
+  color, // Destructure custom prop
+  ...rest // Now only contains HTMLDivElement props
+}: TooltipProps<RechartsValueType, RechartsNameType> & React.ComponentProps<'div'> & {
   hideLabel?: boolean
   hideIndicator?: boolean
   indicator?: 'line' | 'dot' | 'dashed'
   nameKey?: string
   labelKey?: string
+  labelClassName?: string // Add to custom props type
+  color?: string // Add to custom props type
 }) {
-  const { active, payload, label, labelFormatter } = rest;
   const { config } = useChart()
 
   const tooltipLabel = React.useMemo(() => {
@@ -160,7 +170,7 @@ function ChartTooltipContent({
     labelFormatter,
     payload,
     hideLabel,
-    labelClassName,
+    labelClassName, // Added to dependency array
     config,
     labelKey,
   ])
@@ -180,10 +190,10 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item: Payload<ValueType, NameType>, index: number) => {
+        {payload.map((item: RechartsPayload, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload?.fill || item.color
+          const indicatorColor = color || item.payload?.fill || item.color // `color` is now in scope
 
           return (
             <div
@@ -248,12 +258,12 @@ const ChartLegend = RechartsPrimitive.Legend
 function ChartLegendContent({
   className,
   hideIcon = false,
-  payload,
+  payload, // Destructure payload directly
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> & {
-  payload?: Payload<ValueType, NameType>[]; // Explicitly type payload
-  verticalAlign?: LegendProps['verticalAlign']; // Use LegendProps for verticalAlign
+  payload?: RechartsPayload[]; // Use local type
+  verticalAlign?: LegendProps['verticalAlign'];
   hideIcon?: boolean;
   nameKey?: string;
 }) {
@@ -271,7 +281,7 @@ function ChartLegendContent({
         className,
       )}
     >
-      {payload.map((item: Payload<ValueType, NameType>) => {
+      {payload.map((item: RechartsPayload) => { // Use local type
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
