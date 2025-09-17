@@ -92,13 +92,22 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: TooltipProps<number, string> &
+}: Pick<TooltipProps<number, string>, 'active' | 'payload'> &
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
     hideIndicator?: boolean
     indicator?: 'line' | 'dot' | 'dashed'
     nameKey?: string
     labelKey?: string
+    label?: string
+    labelFormatter?: (value: any, payload: any[]) => React.ReactNode
+    formatter?: (
+      value: number,
+      name: string,
+      item: any,
+      index: number,
+      payload: any,
+    ) => React.ReactNode
   }) {
   const { config } = useChart()
 
