@@ -5,22 +5,22 @@ import * as RechartsPrimitive from 'recharts'
 import type {
   TooltipProps,
   LegendProps,
+  NameType,
+  ValueType,
+  DataKey, // Imported DataKey
+  Formatter, // Imported Formatter
 } from 'recharts'
-
-// Define NameType and ValueType as they are not directly exported from recharts
-type NameType = string | number;
-type ValueType = string | number;
 
 // Define the structure of an individual payload item for Tooltip and Legend
 interface TooltipPayloadEntry {
   color?: string;
-  dataKey?: string | number;
+  dataKey?: DataKey<any>; // Updated to DataKey<any>
   fill?: string;
   name?: NameType;
   value?: ValueType;
   payload?: any; // The original data object
   unit?: string;
-  formatter?: (value: ValueType, name: NameType, entry: TooltipPayloadEntry, index: number) => React.ReactNode;
+  formatter?: Formatter<ValueType, NameType>; // Updated to Formatter<ValueType, NameType>
 }
 
 type PayloadType = TooltipPayloadEntry;
@@ -171,9 +171,10 @@ function ChartTooltipContent({
         : itemConfig?.label
 
     if (labelFormatter) {
+      // Cast payload to the expected type for labelFormatter
       return (
         <div className={cn('font-medium', labelClassName)}>
-          {labelFormatter(value, payload)}
+          {labelFormatter(value, payload as TooltipProps<ValueType, NameType>['payload'])}
         </div>
       )
     }
@@ -274,9 +275,7 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
-interface ChartLegendContentProps extends React.ComponentProps<'div'> {
-  payload?: LegendProps['payload'];
-  verticalAlign?: LegendProps['verticalAlign'];
+interface ChartLegendContentProps extends LegendProps<ValueType, NameType>, Omit<React.ComponentProps<'div'>, 'content'> {
   hideIcon?: boolean;
   nameKey?: string;
 }
@@ -287,6 +286,7 @@ function ChartLegendContent({
   payload,
   verticalAlign = 'bottom',
   nameKey,
+  ...props
 }: ChartLegendContentProps) {
   const { config } = useChart()
 
@@ -301,8 +301,9 @@ function ChartLegendContent({
         verticalAlign === 'top' ? 'pb-3' : 'pt-3',
         className,
       )}
+      {...props}
     >
-      {payload.map((item: LegendProps['payload'][number]) => {
+      {payload.map((item: LegendProps<ValueType, NameType>['payload'][number]) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
