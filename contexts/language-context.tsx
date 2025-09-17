@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 
-type Language = "en" | "hi" | "mr" | "pa"
+export type Language = "en" | "hi" | "mr" | "pa" | "kn" | "ta"
 
 interface LanguageContextType {
   currentLang: Language
@@ -130,7 +130,7 @@ const globalTranslations = {
       weather: "मौसम सिफारस",
       weatherDesc: "स्थानीय मौसम पूर्वानुमान और खेती सलाह",
       soilHealth: "मिट्टी स्वास्थ्य कार्ड",
-      soilHealthDesc: "डिजिटल मिट्टी परीक्षण और स्वास्थ्य निगरानी",
+      soilHealthDesc: "डिजital मिट्टी परीक्षण और स्वास्थ्य निगरानी",
       chatBot: "चैट बॉट",
       chatBotDesc: "खेती प्रश्नों के लिए 24/7 AI सहायक",
     },
@@ -394,6 +394,196 @@ const globalTranslations = {
     languages: "ਹਿੰਦੀ, ਮਰਾਠੀ, ਅੰਗਰੇਜ਼ੀ ਅਤੇ ਪੰਜਾਬੀ ਵਿੱਚ ਉਪਲਬਧ",
     support: "ਮੁਫਤ ਸਹਾਇਤਾ: 1800-XXX-XXXX",
   },
+  kn: {
+    title: "ಕೃಷಿಮಿತ್ರ",
+    subtitle: "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಕೃಷಿ ಸಲಹೆಗಾರ",
+    description: "ನಿಮ್ಮ ಸ್ಥಳೀಯ ಭಾಷೆಯಲ್ಲಿ ತಕ್ಷಣದ ಬೆಳೆ ಸಲಹೆ, ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು ಮತ್ತು ಹವಾಮಾನ ನವೀಕರಣಗಳನ್ನು ಪಡೆಯಿರಿ",
+    getStarted: "ಪ್ರಾರಂಭಿಸಿ",
+    voiceSearch: "ಧ್ವನಿ ಹುಡುಕಾಟ",
+    menu: {
+      home: "ಮುಖಪುಟ",
+      profile: "ನನ್ನ ಪ್ರೊಫೈಲ್",
+      schemes: "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು",
+      contact: "ಸಂಪರ್ಕಿಸಿ",
+      chatbot: "ಚಾಟ್ ಬೋಟ್",
+    },
+    features: {
+      cropAdvisory: "ಬೆಳೆ ಸಲಹೆ",
+      cropAdvisoryDesc: "AI-ಚಾಲಿತ ಬೆಳೆ ರೋಗನಿರ್ಣಯ ಮತ್ತು ಶಿಫಾರಸುಗಳು",
+      marketPrice: "ಮಾರುಕಟ್ಟೆ ಬೆಲೆ",
+      marketPriceDesc: "ನೈಜ-ಸಮಯದ ಸ್ಥಳೀಯ ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು",
+      weather: "ಹವಾಮಾನ ಶಿಫಾರಸು",
+      weatherDesc: "ಹೈಪರ್‌ಲೋಕಲ್ ಹವಾಮಾನ ಮುನ್ಸೂಚನೆಗಳು ಮತ್ತು ಕೃಷಿ ಸಲಹೆ",
+      soilHealth: "ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಕಾರ್ಡ್",
+      soilHealthDesc: "ಡಿಜಿಟಲ್ ಮಣ್ಣಿನ ಪರೀಕ್ಷೆ ಮತ್ತು ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ",
+      chatBot: "ಚಾಟ್ ಬೋಟ್",
+      chatBotDesc: "ಕೃಷಿ ಪ್ರಶ್ನೆಗಳಿಗೆ 24/7 AI ಸಹಾಯಕ",
+    },
+    profile: {
+      title: "ನನ್ನ ಪ್ರೊಫೈಲ್",
+      personalInfo: "ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ",
+      farmInfo: "ಕೃಷಿ ಮಾಹಿತಿ",
+      statistics: "ನನ್ನ ಅಂಕಿಅಂಶಗಳು",
+      edit: "ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ",
+      save: "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ",
+      cancel: "ರದ್ದುಮಾಡು",
+      back: "ಹಿಂದೆ",
+      fields: {
+        fullName: "ಪೂರ್ಣ ಹೆಸರು",
+        phone: "ದೂರವಾಣಿ ಸಂಖ್ಯೆ",
+        email: "ಇಮೇಲ್ ವಿಳಾಸ",
+        village: "ಗ್ರಾಮ",
+        district: "ಜಿಲ್ಲೆ",
+        state: "ರಾಜ್ಯ",
+        farmSize: "ಕೃಷಿ ಗಾತ್ರ (ಎಕರೆ)",
+        cropTypes: "ಮುಖ್ಯ ಬೆಳೆಗಳು",
+        experience: "ಕೃಷಿ ಅನುಭವ (ವರ್ಷಗಳು)",
+        bio: "ನನ್ನ ಬಗ್ಗೆ",
+      },
+      placeholders: {
+        fullName: "ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರು ನಮೂದಿಸಿ",
+        phone: "ದೂರವಾಣಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ",
+        email: "ಇಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ",
+        village: "ಗ್ರಾಮದ ಹೆಸರು ನಮೂದಿಸಿ",
+        district: "ಜಿಲ್ಲೆ ನಮೂದಿಸಿ",
+        state: "ರಾಜ್ಯ ಆಯ್ಕೆಮಾಡಿ",
+        farmSize: "ಕೃಷಿ ಗಾತ್ರ ನಮೂದಿಸಿ",
+        cropTypes: "ಉದಾ. ಹತ್ತಿ, ಗೋಧಿ, ಭತ್ತ",
+        experience: "ಅನುಭವದ ವರ್ಷಗಳು",
+        bio: "ನಿಮ್ಮ ಕೃಷಿ ಪ್ರಯಾಣದ ಬಗ್ಗೆ ನಮಗೆ ತಿಳಿಸಿ...",
+      },
+      stats: {
+        totalQueries: "ಒಟ್ಟು ಪ್ರಶ್ನೆಗಳು",
+        cropsDiagnosed: "ರೋಗನಿರ್ಣಯ ಮಾಡಿದ ಬೆಳೆಗಳು",
+        advisoriesReceived: "ಸ್ವೀಕರಿಸಿದ ಸಲಹೆಗಳು",
+        communityPosts: "ಸಮುದಾಯ ಪೋಸ್ಟ್‌ಗಳು",
+      },
+    },
+    contact: {
+      title: "ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ",
+      subtitle: "ನಮ್ಮ ಕೃಷಿ ತಜ್ಞರೊಂದಿಗೆ ಸಂಪರ್ಕದಲ್ಲಿರಿ",
+      form: {
+        fullName: "ಪೂರ್ಣ ಹೆಸರು",
+        village: "ಗ್ರಾಮ",
+        query: "ನಿಮ್ಮ ಪ್ರಶ್ನೆ",
+        submit: "ಪ್ರಶ್ನೆ ಸಲ್ಲಿಸಿ",
+        success: "ಪ್ರಶ್ನೆ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!",
+      },
+      placeholders: {
+        fullName: "ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರು ನಮೂದಿಸಿ",
+        village: "ನಿಮ್ಮ ಗ್ರಾಮದ ಹೆಸರು ನಮೂದಿಸಿ",
+        query: "ನಿಮ್ಮ ಕೃಷಿ ಪ್ರಶ್ನೆ ಅಥವಾ ಸಮಸ್ಯೆಯನ್ನು ವಿವರಿಸಿ...",
+      },
+    },
+    ads: {
+      fertilizer: "ಪ್ರೀಮಿಯಂ ರಸಗೊಬ್ಬರಗಳು",
+      fertilizerDesc: "ಉತ್ತಮ ಬೆಳೆ ಇಳುವರಿಗಾಗಿ ಉತ್ತಮ ಗುಣಮಟ್ಟದ ರಸಗೊಬ್ಬರಗಳು",
+      seeds: "ಗುಣಮಟ್ಟದ ಬೀಜಗಳು",
+      seedsDesc: "ಹೆಚ್ಚಿನ ಇಳುವರಿ ನೀಡುವ ವಿವಿಧ ಬೀಜಗಳು ಲಭ್ಯವಿದೆ",
+      equipment: "ಕೃಷಿ ಉಪಕರಣಗಳು",
+      equipmentDesc: "ಬಾಡಿಗೆಗೆ ಆಧುನಿಕ ಕೃಷಿ ಉಪಕರಣಗಳು",
+      insurance: "ಬೆಳೆ ವಿಮೆ",
+      insuranceDesc: "ವಿಮೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಬೆಳೆಗಳನ್ನು ರಕ್ಷಿಸಿ",
+    },
+    states: "ಭಾರತದಾದ್ಯಂತ ರೈತರಿಗೆ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ",
+    languages: "ಹಿಂದಿ, ಮರಾಠಿ, ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಪಂಜಾಬಿ ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ",
+    support: "ಉಚಿತ ಬೆಂಬಲ: 1800-XXX-XXXX",
+  },
+  ta: {
+    title: "கிருஷிமித்ரா",
+    subtitle: "உங்கள் டிஜிட்டல் விவசாய ஆலோசகர்",
+    description: "உங்கள் உள்ளூர் மொழியில் உடனடி பயிர் ஆலோசனை, சந்தை விலைகள் மற்றும் வானிலை புதுப்பிப்புகளைப் பெறுங்கள்",
+    getStarted: "தொடங்குங்கள்",
+    voiceSearch: "குரல் தேடல்",
+    menu: {
+      home: "முகப்பு",
+      profile: "எனது சுயவிவரம்",
+      schemes: "அரசு திட்டங்கள்",
+      contact: "தொடர்பு",
+      chatbot: "அரட்டை போட்",
+    },
+    features: {
+      cropAdvisory: "பயிர் ஆலோசனை",
+      cropAdvisoryDesc: "AI-இயங்கும் பயிர் கண்டறிதல் மற்றும் பரிந்துரைகள்",
+      marketPrice: "சந்தை விலை",
+      marketPriceDesc: "நிகழ்நேர உள்ளூர் சந்தை விலைகள்",
+      weather: "வானிலை பரிந்துரை",
+      weatherDesc: "உள்ளூர் வானிலை முன்னறிவிப்புகள் மற்றும் விவசாய ஆலோசனை",
+      soilHealth: "மண் சுகாதார அட்டை",
+      soilHealthDesc: "டிஜிட்டல் மண் பரிசோதனை மற்றும் சுகாதார கண்காணிப்பு",
+      chatBot: "அரட்டை போட்",
+      chatBotDesc: "விவசாய வினவல்களுக்கு 24/7 AI உதவியாளர்",
+    },
+    profile: {
+      title: "எனது சுயவிவரம்",
+      personalInfo: "தனிப்பட்ட தகவல்",
+      farmInfo: "பண்ணை தகவல்",
+      statistics: "எனது புள்ளிவிவரங்கள்",
+      edit: "சுயவிவரத்தைத் திருத்து",
+      save: "மாற்றங்களைச் சேமி",
+      cancel: "ரத்துசெய்",
+      back: "பின்",
+      fields: {
+        fullName: "முழு பெயர்",
+        phone: "தொலைபேசி எண்",
+        email: "மின்னஞ்சல் முகவரி",
+        village: "கிராமம்",
+        district: "மாவட்டம்",
+        state: "மாநிலம்",
+        farmSize: "பண்ணை அளவு (ஏக்கர்)",
+        cropTypes: "முக்கிய பயிர்கள்",
+        experience: "விவசாய அனுபவம் (ஆண்டுகள்)",
+        bio: "என்னை பற்றி",
+      },
+      placeholders: {
+        fullName: "உங்கள் முழு பெயரை உள்ளிடவும்",
+        phone: "தொலைபேசி எண்ணை உள்ளிடவும்",
+        email: "மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+        village: "கிராமத்தின் பெயரை உள்ளிடவும்",
+        district: "மாவட்டத்தை உள்ளிடவும்",
+        state: "மாநிலத்தைத் தேர்ந்தெடுக்கவும்",
+        farmSize: "பண்ணை அளவை உள்ளிடவும்",
+        cropTypes: "எ.கா., பருத்தி, கோதுமை, அரிசி",
+        experience: "அனுபவ ஆண்டுகள்",
+        bio: "உங்கள் விவசாயப் பயணம் பற்றி எங்களிடம் கூறுங்கள்...",
+      },
+      stats: {
+        totalQueries: "மொத்த வினவல்கள்",
+        cropsDiagnosed: "பயிர்கள் கண்டறியப்பட்டன",
+        advisoriesReceived: "ஆலோசனைகள் பெறப்பட்டன",
+        communityPosts: "சமூக இடுகைகள்",
+      },
+    },
+    contact: {
+      title: "எங்களை தொடர்பு கொள்ளவும்",
+      subtitle: "எங்கள் விவசாய நிபுணர்களுடன் தொடர்பு கொள்ளுங்கள்",
+      form: {
+        fullName: "முழு பெயர்",
+        village: "கிராமம்",
+        query: "உங்கள் கேள்வி",
+        submit: "வினவலைச் சமர்ப்பி",
+        success: "வினவல் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!",
+      },
+      placeholders: {
+        fullName: "உங்கள் முழு பெயரை உள்ளிடவும்",
+        village: "உங்கள் கிராமத்தின் பெயரை உள்ளிடவும்",
+        query: "உங்கள் விவசாய கேள்வி அல்லது சிக்கலை விவரிக்கவும்...",
+      },
+    },
+    ads: {
+      fertilizer: "பிரீமியம் உரங்கள்",
+      fertilizerDesc: "சிறந்த பயிர் விளைச்சலுக்கான சிறந்த தரமான உரங்கள்",
+      seeds: "தரமான விதைகள்",
+      seedsDesc: "அதிக மகசூல் தரும் பல்வேறு விதைகள் உள்ளன",
+      equipment: "பண்ணை உபகரணங்கள்",
+      equipmentDesc: "வாடகைக்கு நவீன விவசாய உபகரணங்கள்",
+      insurance: "பயிர் காப்பீடு",
+      insuranceDesc: "காப்பீட்டுடன் உங்கள் பயிர்களைப் பாதுகாக்கவும்",
+    },
+    states: "இந்தியா முழுவதும் விவசாயிகளுக்கு சேவை செய்கிறது",
+    languages: "இந்தி, மராத்தி, இங்கிலீஷ் மற்றும் பஞ்சாபி மொழிகளில் கிடைக்கிறது",
+    support: "இலவச ஆதரவு: 1800-XXX-XXXX",
+  },
 }
 
 interface LanguageProviderProps {
@@ -408,7 +598,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     const savedLang = localStorage.getItem("krishi-language") as Language
     const hasSelected = localStorage.getItem("krishi-language-selected") === "true"
 
-    if (savedLang && ["en", "hi", "mr", "pa"].includes(savedLang)) {
+    if (savedLang && ["en", "hi", "mr", "pa", "kn", "ta"].includes(savedLang)) {
       setCurrentLangState(savedLang)
       setHasSelectedLanguage(hasSelected)
     }

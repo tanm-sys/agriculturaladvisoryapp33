@@ -17,10 +17,56 @@ import {
   MessageCircle,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useLanguage } from "@/contexts/language-context"
+import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
+
+interface Advisory {
+  title: string
+  description: string
+  time: string
+  priority: "high" | "medium" | "low"
+}
+
+interface WeatherInfo {
+  temp: string
+  condition: string
+  humidity: string
+  rainfall: string
+}
+
+interface PriceInfo {
+  crop: string
+  price: string
+  change: string
+}
+
+interface DashboardLanguageContent {
+  title: string
+  welcome: string
+  voicePrompt: string
+  quickActions: string
+  recentAdvisories: string
+  todayWeather: string
+  marketPrices: string
+  actions: {
+    cropDiagnosis: string
+    cropDiagnosisDesc: string
+    marketPrices: string
+    marketPricesDesc: string
+    weather: string
+    weatherDesc: string
+    community: string
+    communityDesc: string
+  }
+  advisories: Advisory[]
+  weather: WeatherInfo
+  prices: PriceInfo[]
+  voiceListening: string
+  voiceProcessing: string
+  speakNow: string
+}
 
 // Language support for dashboard
-const dashboardLanguages = {
+const dashboardLanguages: Record<string, DashboardLanguageContent> = {
   en: {
     title: "KrishiMitra Dashboard",
     welcome: "Welcome back, Farmer",
@@ -86,6 +132,14 @@ const dashboardLanguages = {
       community: "समुदाय",
       communityDesc: "तज्ञांना विचारा",
     },
+    advisories: [],
+    weather: {
+      temp: "28°C",
+      condition: "अंशतः ढगाळ",
+      humidity: "65%",
+      rainfall: "20मिमी अपेक्षित",
+    },
+    prices: [],
     voiceListening: "ऐकत आहे...",
     voiceProcessing: "तुमचा प्रश्न प्रक्रिया करत आहे...",
     speakNow: "आता बोला",
@@ -108,6 +162,14 @@ const dashboardLanguages = {
       community: "சமூகம்",
       communityDesc: "நிபுணர்களிடம் கேளுங்கள்",
     },
+    advisories: [],
+    weather: {
+      temp: "28°C",
+      condition: "பகுதி மேகமூட்டம்",
+      humidity: "65%",
+      rainfall: "20மிமீ எதிர்பார்க்கப்படுகிறது",
+    },
+    prices: [],
     voiceListening: "கேட்கிறது...",
     voiceProcessing: "உங்கள் கேள்வியை செயலாக்குகிறது...",
     speakNow: "இப்போது பேசுங்கள்",
@@ -130,6 +192,14 @@ const dashboardLanguages = {
       community: "ಸಮುದಾಯ",
       communityDesc: "ತಜ್ಞರನ್ನು ಕೇಳಿ",
     },
+    advisories: [],
+    weather: {
+      temp: "28°C",
+      condition: "ಭಾಗಶಃ ಮೋಡ ಕವಿದಿದೆ",
+      humidity: "65%",
+      rainfall: "20ಮಿಮೀ ನಿರೀಕ್ಷಿಸಲಾಗಿದೆ",
+    },
+    prices: [],
     voiceListening: "ಕೇಳುತ್ತಿದೆ...",
     voiceProcessing: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತಿದೆ...",
     speakNow: "ಈಗ ಮಾತನಾಡಿ",
@@ -152,6 +222,14 @@ const dashboardLanguages = {
       community: "ਭਾਈਚਾਰਾ",
       communityDesc: "ਮਾਹਿਰਾਂ ਨੂੰ ਪੁੱਛੋ",
     },
+    advisories: [],
+    weather: {
+      temp: "28°C",
+      condition: "ਅੰਸ਼ਕ ਤੌਰ 'ਤੇ ਬੱਦਲਵਾਈ",
+      humidity: "65%",
+      rainfall: "20mm ਦੀ ਉਮੀਦ",
+    },
+    prices: [],
     voiceListening: "ਸੁਣ ਰਿਹਾ ਹੈ...",
     voiceProcessing: "ਤੁਹਾਡੇ ਸਵਾਲ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰ ਰਿਹਾ ਹੈ...",
     speakNow: "ਹੁਣ ਬੋਲੋ",
@@ -232,7 +310,7 @@ export default function Dashboard() {
                   key={lang}
                   variant={currentLang === lang ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setCurrentLang(lang as keyof typeof dashboardLanguages)}
+                  onClick={() => setCurrentLang(lang as Language)}
                   className="text-xs px-2 py-1 h-7 transition-all duration-200 hover:scale-105"
                 >
                   {lang.toUpperCase()}
@@ -381,7 +459,7 @@ export default function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(t.advisories || []).map((advisory, index) => (
+              {t.advisories.map((advisory: Advisory, index: number) => (
                 <div
                   key={index}
                   className="border-l-4 border-primary/30 pl-3 space-y-1 animate-fade-in"
@@ -435,7 +513,7 @@ export default function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(t.prices || []).map((price, index) => (
+              {t.prices.map((price: PriceInfo, index: number) => (
                 <div
                   key={index}
                   className="flex justify-between items-center animate-fade-in"

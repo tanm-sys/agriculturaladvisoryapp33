@@ -8,7 +8,56 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
-const translations = {
+interface SchemeContact {
+  phone: string
+  email: string
+  website: string
+}
+
+interface Scheme {
+  id: number
+  title: string
+  description: string
+  category: string
+  eligibility: string
+  amount: string
+  deadline: string
+  status: string
+  details: string
+  benefits: string[]
+  documents: string[]
+  contact: SchemeContact
+}
+
+interface SchemesTranslations {
+  title: string
+  subtitle: string
+  searchPlaceholder: string
+  categories: {
+    all: string
+    subsidy: string
+    insurance: string
+    loan: string
+    training: string
+    equipment: string
+  }
+  schemes: Scheme[]
+  applyNow: string
+  viewDetails: string
+  backToHome: string
+  eligibility: string
+  amount: string
+  deadline: string
+  status: string
+  benefits: string
+  documents: string
+  contact: string
+  phone: string
+  email: string
+  website: string
+}
+
+const translations: Record<string, SchemesTranslations> = {
   en: {
     title: "Government Schemes",
     subtitle: "Agricultural schemes and subsidies for farmers",
@@ -583,13 +632,13 @@ const translations = {
 }
 
 export default function SchemesPage() {
-  const { language } = useLanguage()
+  const { currentLang } = useLanguage()
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedScheme, setSelectedScheme] = useState<any>(null)
+  const [selectedScheme, setSelectedScheme] = useState<Scheme | null>(null)
 
-  const t = translations[language as keyof typeof translations] || translations.en
+  const t = translations[currentLang] || translations.en
 
   const filteredSchemes = t.schemes.filter((scheme) => {
     const matchesCategory = selectedCategory === "all" || scheme.category === selectedCategory
@@ -600,18 +649,18 @@ export default function SchemesPage() {
   })
 
   const getCategoryColor = (category: string) => {
-    const colors = {
+    const colors: Record<string, string> = {
       subsidy: "bg-green-100 text-green-800",
       insurance: "bg-blue-100 text-blue-800",
       loan: "bg-purple-100 text-purple-800",
       training: "bg-orange-100 text-orange-800",
       equipment: "bg-red-100 text-red-800",
     }
-    return colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
+    return colors[category] || "bg-gray-100 text-gray-800"
   }
 
   const getStatusColor = (status: string) => {
-    return status === "Active" || status === "सक्रिय" || status === "सक्रिय" || status === "ਸਰਗਰਮ"
+    return status === "Active" || status === "सक्रिय" || status === "ਸਰਗਰਮ"
       ? "bg-green-100 text-green-800"
       : "bg-red-100 text-red-800"
   }
@@ -773,7 +822,7 @@ export default function SchemesPage() {
 
         {/* Schemes Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSchemes.map((scheme) => (
+          {filteredSchemes.map((scheme: Scheme) => (
             <Card key={scheme.id} className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
                 <div className="flex justify-between items-start mb-2">

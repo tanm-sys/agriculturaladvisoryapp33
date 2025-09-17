@@ -20,14 +20,64 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
+interface Question {
+  id: number
+  title: string
+  category: string
+  author: string
+  time: string
+  likes: number
+  replies: number
+  status: "answered" | "pending"
+  preview: string
+}
+
+interface Expert {
+  name: string
+  specialty: string
+  rating: number
+  answers: number
+  avatar: string
+}
+
+interface CommunityLanguageContent {
+  title: string
+  askExperts: string
+  recentQuestions: string
+  topExperts: string
+  categories: string[]
+  searchPlaceholder: string
+  askQuestion: string
+  questionTitle: string
+  questionDetails: string
+  selectCategory: string
+  submitQuestion: string
+  back: string
+  answered: string
+  pending: string
+  likes: string
+  replies: string
+  questions: Question[]
+  experts: Expert[]
+}
+
 // Language support for community
-const communityLanguages = {
+const communityLanguages: Record<string, CommunityLanguageContent> = {
   en: {
     title: "Farmer Community",
     askExperts: "Ask Experts",
     recentQuestions: "Recent Questions",
     topExperts: "Top Experts",
-    categories: "Categories",
+    categories: [
+      "Crop Diseases",
+      "Pest Control",
+      "Fertilizers",
+      "Weather",
+      "Market Prices",
+      "Irrigation",
+      "Seeds",
+      "General",
+    ],
     searchPlaceholder: "Search questions...",
     askQuestion: "Ask a Question",
     questionTitle: "Question Title",
@@ -39,16 +89,6 @@ const communityLanguages = {
     pending: "Pending",
     likes: "likes",
     replies: "replies",
-    categories: [
-      "Crop Diseases",
-      "Pest Control",
-      "Fertilizers",
-      "Weather",
-      "Market Prices",
-      "Irrigation",
-      "Seeds",
-      "General",
-    ],
     questions: [
       {
         id: 1,
@@ -113,7 +153,16 @@ const communityLanguages = {
     askExperts: "तज्ञांना विचारा",
     recentQuestions: "अलीकडील प्रश्न",
     topExperts: "शीर्ष तज्ञ",
-    categories: "श्रेणी",
+    categories: [
+      "पीक रोग",
+      "कीटक नियंत्रण",
+      "खते",
+      "हवामान",
+      "बाजार भाव",
+      "सिंचन",
+      "बियाणे",
+      "सामान्य",
+    ],
     searchPlaceholder: "प्रश्न शोधा...",
     askQuestion: "प्रश्न विचारा",
     questionTitle: "प्रश्नाचे शीर्षक",
@@ -125,13 +174,24 @@ const communityLanguages = {
     pending: "प्रलंबित",
     likes: "आवडी",
     replies: "उत्तरे",
+    questions: [],
+    experts: [],
   },
   ta: {
     title: "விவசாயி சமூகம்",
     askExperts: "நிபுணர்களிடம் கேளுங்கள்",
     recentQuestions: "சமீபத்திய கேள்விகள்",
     topExperts: "சிறந்த நிபுணர்கள்",
-    categories: "வகைகள்",
+    categories: [
+      "பயிர் நோய்கள்",
+      "பூச்சி கட்டுப்பாடு",
+      "உரங்கள்",
+      "வானிலை",
+      "சந்தை விலைகள்",
+      "நீர்ப்பாசனம்",
+      "விதைகள்",
+      "பொது",
+    ],
     searchPlaceholder: "கேள்விகளைத் தேடுங்கள்...",
     askQuestion: "கேள்வி கேளுங்கள்",
     questionTitle: "கேள்வி தலைப்பு",
@@ -143,13 +203,24 @@ const communityLanguages = {
     pending: "நிலுவையில்",
     likes: "விருப்பங்கள்",
     replies: "பதில்கள்",
+    questions: [],
+    experts: [],
   },
   kn: {
     title: "ರೈತ ಸಮುದಾಯ",
     askExperts: "ತಜ್ಞರನ್ನು ಕೇಳಿ",
     recentQuestions: "ಇತ್ತೀಚಿನ ಪ್ರಶ್ನೆಗಳು",
     topExperts: "ಉನ್ನತ ತಜ್ಞರು",
-    categories: "ವರ್ಗಗಳು",
+    categories: [
+      "ಬೆಳೆ ರೋಗಗಳು",
+      "ಕೀಟ ನಿಯಂತ್ರಣ",
+      "ಗೊಬ್ಬರಗಳು",
+      "ಹವಾಮಾನ",
+      "ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು",
+      "ನೀರಾವರಿ",
+      "ಬೀಜಗಳು",
+      "ಸಾಮಾನ್ಯ",
+    ],
     searchPlaceholder: "ಪ್ರಶ್ನೆಗಳನ್ನು ಹುಡುಕಿ...",
     askQuestion: "ಪ್ರಶ್ನೆ ಕೇಳಿ",
     questionTitle: "ಪ್ರಶ್ನೆ ಶೀರ್ಷಿಕೆ",
@@ -161,13 +232,24 @@ const communityLanguages = {
     pending: "ಬಾಕಿ",
     likes: "ಇಷ್ಟಗಳು",
     replies: "ಉತ್ತರಗಳು",
+    questions: [],
+    experts: [],
   },
   pa: {
     title: "ਕਿਸਾਨ ਭਾਈਚਾਰਾ",
     askExperts: "ਮਾਹਿਰਾਂ ਨੂੰ ਪੁੱਛੋ",
     recentQuestions: "ਹਾਲੀਆ ਸਵਾਲ",
     topExperts: "ਚੋਟੀ ਦੇ ਮਾਹਿਰ",
-    categories: "ਸ਼੍ਰੇਣੀਆਂ",
+    categories: [
+      "ਫਸਲਾਂ ਦੇ ਰੋਗ",
+      "ਕੀਟ ਕੰਟਰੋਲ",
+      "ਖਾਦਾਂ",
+      "ਮੌਸਮ",
+      "ਮਾਰਕੀਟ ਕੀਮਤਾਂ",
+      "ਸਿੰਚਾਈ",
+      "ਬੀਜ",
+      "ਜਨਰਲ",
+    ],
     searchPlaceholder: "ਸਵਾਲ ਖੋਜੋ...",
     askQuestion: "ਸਵਾਲ ਪੁੱਛੋ",
     questionTitle: "ਸਵਾਲ ਦਾ ਸਿਰਲੇਖ",
@@ -179,6 +261,8 @@ const communityLanguages = {
     pending: "ਬਾਕੀ",
     likes: "ਪਸੰਦਾਂ",
     replies: "ਜਵਾਬਾਂ",
+    questions: [],
+    experts: [],
   },
 }
 
@@ -257,7 +341,7 @@ export default function CommunityPage() {
               <div>
                 <label className="text-sm font-medium">{t.selectCategory}</label>
                 <select className="w-full mt-1 p-2 border border-border rounded-md bg-background">
-                  {(t.categories || []).map((category, index) => (
+                  {t.categories.map((category: string, index: number) => (
                     <option key={index} value={category}>
                       {category}
                     </option>
@@ -289,7 +373,7 @@ export default function CommunityPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(t.questions || []).map((question) => (
+                {t.questions.map((question: Question) => (
                   <div key={question.id} className="border-b border-border pb-4 last:border-b-0">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1">
@@ -340,7 +424,7 @@ export default function CommunityPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {(t.experts || []).map((expert, index) => (
+                {t.experts.map((expert: Expert, index: number) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                       <span className="text-sm font-semibold">{expert.avatar}</span>
@@ -371,7 +455,7 @@ export default function CommunityPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {(t.categories || []).map((category, index) => (
+                  {t.categories.map((category: string, index: number) => (
                     <Button key={index} variant="ghost" size="sm" className="w-full justify-start text-xs">
                       {category}
                     </Button>

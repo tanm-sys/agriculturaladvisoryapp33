@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
-import { useLanguage } from "@/contexts/language-context"
+import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -64,8 +64,8 @@ export default function LoginPage() {
   const [availableTalukas, setAvailableTalukas] = useState<string[]>([])
   const [availableVillages, setAvailableVillages] = useState<string[]>([])
 
-  const handleLanguageSelect = (lang: string) => {
-    setCurrentLang(lang as "en" | "hi" | "mr" | "pa")
+  const handleLanguageSelect = (lang: Language) => {
+    setCurrentLang(lang)
     setFormData((prev) => ({ ...prev, language: lang }))
     setShowLanguageSelection(false)
   }

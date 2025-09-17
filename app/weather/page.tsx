@@ -7,8 +7,43 @@ import { Badge } from "@/components/ui/badge"
 import { Cloud, CloudRain, Sun, Wind, Droplets, Eye, ArrowLeft, Calendar, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
 
+interface AlertItem {
+  type: string
+  title: string
+  description: string
+  time: string
+}
+
+interface ForecastItem {
+  day: string
+  temp: string
+  condition: string
+  icon: string
+  rain: string
+}
+
+interface WeatherLanguageContent {
+  title: string
+  currentWeather: string
+  sevenDayForecast: string
+  hourlyForecast: string
+  weatherAlerts: string
+  location: string
+  temperature: string
+  humidity: string
+  windSpeed: string
+  visibility: string
+  rainfall: string
+  uvIndex: string
+  back: string
+  today: string
+  tomorrow: string
+  alerts: AlertItem[]
+  forecast: ForecastItem[]
+}
+
 // Language support for weather
-const weatherLanguages = {
+const weatherLanguages: Record<string, WeatherLanguageContent> = {
   en: {
     title: "Weather Forecast",
     currentWeather: "Current Weather",
@@ -59,6 +94,8 @@ const weatherLanguages = {
     back: "परत",
     today: "आज",
     tomorrow: "उद्या",
+    alerts: [],
+    forecast: [],
   },
   ta: {
     title: "வானிலை முன்னறிவிப்பு",
@@ -76,6 +113,8 @@ const weatherLanguages = {
     back: "பின்",
     today: "இன்று",
     tomorrow: "நாளை",
+    alerts: [],
+    forecast: [],
   },
   kn: {
     title: "ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ",
@@ -93,6 +132,8 @@ const weatherLanguages = {
     back: "ಹಿಂದೆ",
     today: "ಇಂದು",
     tomorrow: "ನಾಳೆ",
+    alerts: [],
+    forecast: [],
   },
   pa: {
     title: "ਮੌਸਮ ਪੂਰਵ-ਅਨੁਮਾਨ",
@@ -110,6 +151,8 @@ const weatherLanguages = {
     back: "ਵਾਪਸ",
     today: "ਅੱਜ",
     tomorrow: "ਕੱਲ੍ਹ",
+    alerts: [],
+    forecast: [],
   },
 }
 
@@ -209,13 +252,13 @@ export default function WeatherPage() {
         </Card>
 
         {/* Weather Alerts */}
-        {t.alerts && (
+        {t.alerts && t.alerts.length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">{t.weatherAlerts}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {t.alerts.map((alert, index) => (
+              {t.alerts.map((alert: AlertItem, index: number) => (
                 <div key={index} className="border-l-4 border-orange-500 pl-3 space-y-1">
                   <div className="flex items-center gap-2">
                     <h4 className="font-medium text-sm">{alert.title}</h4>
@@ -241,7 +284,7 @@ export default function WeatherPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {(t.forecast || []).map((day, index) => (
+              {t.forecast.map((day: ForecastItem, index: number) => (
                 <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                   <div className="flex items-center gap-3">
                     {getWeatherIcon(day.icon)}

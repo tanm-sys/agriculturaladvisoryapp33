@@ -33,8 +33,80 @@ import {
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 
+interface SoilDataEntry {
+  ph: string
+  nitrogen: string
+  phosphorus: string
+  potassium: string
+  organicCarbon: string
+  sulfur: string
+  zinc: string
+  boron: string
+  iron: string
+  manganese: string
+}
+
+interface SampleSoilData {
+  value: number
+  status: string
+  range: string
+}
+
+interface DiagnosisSampleResults {
+  disease: string
+  description: string
+  treatment: string
+  prevention: string
+}
+
+interface DiagnosisTips {
+  photoTips: string
+  tip1: string
+  tip2: string
+  tip3: string
+  tip4: string
+}
+
+interface DiagnosisLanguageContent {
+  title: string
+  subtitle: string
+  uploadPrompt: string
+  takePhoto: string
+  uploadImage: string
+  analyzing: string
+  results: string
+  confidence: string
+  recommendations: string
+  soilHealth: string
+  soilHealthCard: string
+  hasCard: string
+  noCard: string
+  uploadCard: string
+  enterAadhaar: string
+  linkAadhaar: string
+  soilParameters: string
+  locationDetails: string
+  selectState: string
+  selectDistrict: string
+  selectCity: string
+  manualEntry: string
+  severity: {
+    low: string
+    medium: string
+    high: string
+  }
+  actions: {
+    retake: string
+    speakResults: string
+    getHelp: string
+  }
+  sampleResults: DiagnosisSampleResults
+  soilData: Record<keyof SoilDataEntry, string>
+  tips: DiagnosisTips
+}
+
 // Enhanced language support for crop diagnosis with soil health
-const diagnosisLanguages = {
+const diagnosisLanguages: Record<string, DiagnosisLanguageContent> = {
   en: {
     title: "Crop Advisory & Soil Health",
     subtitle: "AI-Powered Crop Analysis with Soil Health Integration",
@@ -274,7 +346,24 @@ const diagnosisLanguages = {
   },
 }
 
-const locationData = {
+interface CityData {
+  [key: string]: string[]
+}
+
+interface DistrictData {
+  [key: string]: CityData
+}
+
+interface StateData {
+  name: string
+  districts: CityData
+}
+
+interface LocationData {
+  [key: string]: StateData
+}
+
+const locationData: LocationData = {
   MH: {
     name: "Maharashtra",
     districts: {
@@ -337,7 +426,7 @@ export default function CropDiagnosis() {
   const [selectedCity, setSelectedCity] = useState("")
   const [showManualEntry, setShowManualEntry] = useState(false)
 
-  const [manualSoilData, setManualSoilData] = useState({
+  const [manualSoilData, setManualSoilData] = useState<SoilDataEntry>({
     ph: "",
     nitrogen: "",
     phosphorus: "",
@@ -353,9 +442,9 @@ export default function CropDiagnosis() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const soilCardInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
-  const t = diagnosisLanguages[currentLang as keyof typeof diagnosisLanguages] || diagnosisLanguages.en
+  const t = diagnosisLanguages[currentLang]
 
-  const sampleSoilData = {
+  const sampleSoilData: Record<keyof SoilDataEntry, SampleSoilData> = {
     ph: { value: 6.8, status: "optimal", range: "6.5-7.5" },
     nitrogen: { value: 280, status: "medium", range: "280-560 kg/ha" },
     phosphorus: { value: 22, status: "high", range: "10-25 kg/ha" },
@@ -664,8 +753,8 @@ export default function CropDiagnosis() {
                                 </SelectTrigger>
                                 <SelectContent>
                                   {selectedState &&
-                                    Object.keys(locationData[selectedState as keyof typeof locationData].districts).map(
-                                      (district) => (
+                                    Object.keys(locationData[selectedState].districts).map(
+                                      (district: string) => (
                                         <SelectItem key={district} value={district}>
                                           {district}
                                         </SelectItem>
@@ -684,9 +773,7 @@ export default function CropDiagnosis() {
                                 <SelectContent>
                                   {selectedState &&
                                     selectedDistrict &&
-                                    locationData[selectedState as keyof typeof locationData].districts[
-                                      selectedDistrict
-                                    ]?.map((city) => (
+                                    locationData[selectedState].districts[selectedDistrict]?.map((city: string) => (
                                       <SelectItem key={city} value={city}>
                                         {city}
                                       </SelectItem>
