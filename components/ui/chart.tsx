@@ -138,7 +138,7 @@ interface ChartTooltipContentProps extends Omit<React.ComponentProps<'div'>, 'co
   active?: boolean;
   payload?: PayloadType[];
   label?: string | number;
-  labelFormatter?: TooltipProps['labelFormatter'];
+  labelFormatter?: TooltipProps<ValueType, NameType>['labelFormatter'];
   hideLabel?: boolean;
   hideIndicator?: boolean;
   indicator?: 'line' | 'dot' | 'dashed';
@@ -171,7 +171,7 @@ function ChartTooltipContent({
     }
 
     const [item] = payload
-    const key = `${labelKey || item?.dataKey || item?.name || 'value'}`
+    const key = String(labelKey || item?.dataKey || item?.name || 'value')
     const itemConfig = getPayloadConfigFromPayload(config, item, key)
     const value =
       !labelKey && typeof label === 'string'
@@ -179,10 +179,10 @@ function ChartTooltipContent({
         : itemConfig?.label
 
     if (labelFormatter) {
-      // Cast payload to the expected type for labelFormatter
+      // Pass payload directly, it's already the correct type
       return (
         <div className={cn('font-medium', labelClassName)}>
-          {labelFormatter(value, payload as TooltipProps['payload'])}
+          {labelFormatter(value, payload)}
         </div>
       )
     }
@@ -219,7 +219,7 @@ function ChartTooltipContent({
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
         {payload.map((item: PayloadType, index: number) => {
-          const key = `${nameKey || item.name || item.dataKey || 'value'}`
+          const key = String(nameKey || item.name || item.dataKey || 'value')
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
           const indicatorColor = color || item.payload?.fill || item.color
 
@@ -283,17 +283,19 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
-interface ChartLegendContentProps extends LegendProps, Omit<React.ComponentProps<'div'>, 'content'> {
+interface ChartLegendContentProps extends React.ComponentProps<'div'> {
   hideIcon?: boolean;
   nameKey?: string;
+  payload?: LegendProps<ValueType, NameType>['payload'];
+  verticalAlign?: LegendProps<ValueType, NameType>['verticalAlign'];
 }
 
 function ChartLegendContent({
   className,
   hideIcon = false,
-  payload,
   verticalAlign = 'bottom',
   nameKey,
+  payload, // Destructure payload directly from props
   ...props
 }: ChartLegendContentProps) {
   const { config } = useChart()
@@ -311,8 +313,8 @@ function ChartLegendContent({
       )}
       {...props}
     >
-      {payload.map((item: LegendProps['payload'][number]) => {
-        const key = `${nameKey || item.dataKey || 'value'}`
+      {payload.map((item: LegendProps<ValueType, NameType>['payload'][number]) => {
+        const key = String(nameKey || item.dataKey || 'value')
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
         return (
