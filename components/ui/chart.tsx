@@ -5,11 +5,19 @@ import * as RechartsPrimitive from 'recharts'
 import type {
   TooltipProps,
   LegendProps,
-  NameType,
-  ValueType,
-  DataKey, // Imported DataKey
-  Formatter, // Imported Formatter
 } from 'recharts'
+
+// Define the types that are no longer exported by recharts
+type NameType = string | number
+type ValueType = string | number | (string | number)[]
+type DataKey<T = any> = keyof T
+type Formatter<TValue extends ValueType, TName extends NameType> = (
+  value: TValue,
+  name: TName,
+  entry: any,
+  index: number,
+  payload: any[],
+) => React.ReactNode
 
 // Define the structure of an individual payload item for Tooltip and Legend
 interface TooltipPayloadEntry {
@@ -130,7 +138,7 @@ interface ChartTooltipContentProps extends Omit<React.ComponentProps<'div'>, 'co
   active?: boolean;
   payload?: PayloadType[];
   label?: string | number;
-  labelFormatter?: TooltipProps<ValueType, NameType>['labelFormatter'];
+  labelFormatter?: TooltipProps['labelFormatter'];
   hideLabel?: boolean;
   hideIndicator?: boolean;
   indicator?: 'line' | 'dot' | 'dashed';
@@ -174,7 +182,7 @@ function ChartTooltipContent({
       // Cast payload to the expected type for labelFormatter
       return (
         <div className={cn('font-medium', labelClassName)}>
-          {labelFormatter(value, payload as TooltipProps<ValueType, NameType>['payload'])}
+          {labelFormatter(value, payload as TooltipProps['payload'])}
         </div>
       )
     }
@@ -217,7 +225,7 @@ function ChartTooltipContent({
 
           return (
             <div
-              key={item.dataKey}
+              key={item.dataKey as React.Key}
               className={cn(
                 '[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5',
                 indicator === 'dot' && 'items-center',
@@ -275,7 +283,7 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
-interface ChartLegendContentProps extends LegendProps<ValueType, NameType>, Omit<React.ComponentProps<'div'>, 'content'> {
+interface ChartLegendContentProps extends LegendProps, Omit<React.ComponentProps<'div'>, 'content'> {
   hideIcon?: boolean;
   nameKey?: string;
 }
@@ -303,13 +311,13 @@ function ChartLegendContent({
       )}
       {...props}
     >
-      {payload.map((item: LegendProps<ValueType, NameType>['payload'][number]) => {
+      {payload.map((item: LegendProps['payload'][number]) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
         return (
           <div
-            key={item.value}
+            key={item.value as React.Key}
             className={cn(
               '[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3',
             )}
