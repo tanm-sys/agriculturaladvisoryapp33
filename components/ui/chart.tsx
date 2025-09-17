@@ -5,9 +5,9 @@ import * as RechartsPrimitive from 'recharts'
 import type {
   TooltipProps,
   LegendProps,
-  Payload,
-  NameType,
-  ValueType,
+  Payload, // Correctly imported
+  NameType, // Correctly imported
+  ValueType, // Correctly imported
 } from 'recharts'
 
 import { cn } from '@/lib/utils'
@@ -62,7 +62,7 @@ function ChartContainer({
         data-slot="chart"
         data-chart={chartId}
         className={cn(
-          "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
+          "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
           className,
         )}
         {...props}
@@ -116,14 +116,14 @@ function ChartTooltipContent({
   payload,
   label,
   labelFormatter,
-  labelClassName,
-  color, // Destructure color directly
   className,
   indicator = 'dot',
   hideLabel = false,
   hideIndicator = false,
   nameKey,
   labelKey,
+  labelClassName,
+  color,
   ...props // Remaining HTMLDivElement props
 }: TooltipProps<ValueType, NameType> & React.ComponentProps<'div'> & {
   hideLabel?: boolean
@@ -131,7 +131,8 @@ function ChartTooltipContent({
   indicator?: 'line' | 'dot' | 'dashed'
   nameKey?: string
   labelKey?: string
-  // labelClassName and color are already in TooltipProps, no need to redefine here
+  labelClassName?: string
+  color?: string
 }) {
   const { config } = useChart()
 
@@ -166,7 +167,7 @@ function ChartTooltipContent({
     labelFormatter,
     payload,
     hideLabel,
-    labelClassName, // Now correctly referenced
+    labelClassName,
     config,
     labelKey,
   ])
@@ -183,13 +184,14 @@ function ChartTooltipContent({
         'border-border/50 bg-background grid min-w-[8rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl',
         className,
       )}
+      {...props}
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
         {payload.map((item: Payload<ValueType, NameType>, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload?.fill || item.color // Now color is correctly referenced
+          const indicatorColor = color || item.payload?.fill || item.color
 
           return (
             <div
