@@ -19,7 +19,7 @@ const actionTypes = {
   ADD_TOAST: 'ADD_TOAST',
   UPDATE_TOAST: 'UPDATE_TOAST',
   DISMISS_TOAST: 'DISMISS_TOAST',
-  REMOVE_TOAST: 'REMOVE_TOAST',
+  REMOVE_TOAST',
 } as const
 
 let count = 0
@@ -139,7 +139,7 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, 'id'>
 
-function toast({ ...props }: Toast) {
+function createToast({ ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -167,6 +167,14 @@ function toast({ ...props }: Toast) {
     update,
   }
 }
+
+const toast = {
+  ...createToast,
+  success: (title: React.ReactNode, description?: React.ReactNode) =>
+    createToast({ title, description, variant: 'default' }),
+  error: (title: React.ReactNode, description?: React.ReactNode) =>
+    createToast({ title, description, variant: 'destructive' }),
+};
 
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)

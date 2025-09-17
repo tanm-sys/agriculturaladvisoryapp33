@@ -8,6 +8,7 @@ import { Suspense } from "react"
 import "./globals.css"
 import { LanguageProvider } from "@/contexts/language-context"
 import { AuthProvider } from "@/contexts/auth-context"
+import { Toaster } from "@/components/ui/toaster" // Import Toaster
 
 export default function ClientLayout({
   children,
@@ -57,6 +58,7 @@ export default function ClientLayout({
           </LanguageProvider>
         </AuthProvider>
         <Analytics />
+        <Toaster /> {/* Add Toaster here */}
       </body>
     </html>
   )

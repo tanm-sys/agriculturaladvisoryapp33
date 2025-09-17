@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Leaf } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { toast } from "@/hooks/use-toast" // Import toast for notifications
 
 // Indian states and their districts data
 const statesData = {
@@ -110,13 +112,13 @@ export default function LoginPage() {
       !formData.taluka ||
       !formData.village
     ) {
-      alert(translations.fillAllFields || "Please fill all fields")
+      toast.error(translations.fillAllFields || "Please fill all fields")
       return
     }
 
     // Mobile number validation
     if (!/^\d{10}$/.test(formData.mobileNumber)) {
-      alert(translations.invalidMobile || "Please enter a valid 10-digit mobile number")
+      toast.error(translations.invalidMobile || "Please enter a valid 10-digit mobile number")
       return
     }
 
@@ -132,191 +134,237 @@ export default function LoginPage() {
 
   if (showLanguageSelection) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-full max-w-md p-6">
-          <div className="text-center mb-8">
-            <Leaf className="h-16 w-16 text-green-600 mx-auto mb-4 animate-pulse" />
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md p-6 text-center space-y-6 glass-effect animate-fade-in">
+          <CardHeader>
+            <Leaf className="h-16 w-16 text-primary mx-auto mb-4 animate-pulse" />
+            <CardTitle className="text-2xl font-bold text-foreground gradient-text">
               {currentLang === "hi"
                 ? "भाषा चुनें"
                 : currentLang === "mr"
                   ? "भाषा निवडा"
                   : currentLang === "pa"
                     ? "ਭਾਸ਼ਾ ਚੁਣੋ"
-                    : "Select Language"}
-            </h1>
-            <p className="text-gray-600">
+                    : currentLang === "kn"
+                      ? "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ"
+                      : currentLang === "ta"
+                        ? "மொழி தேர்வு செய்யவும்"
+                        : "Select Language"}
+            </CardTitle>
+            <p className="text-muted-foreground text-pretty">
               {currentLang === "hi"
                 ? "अपनी पसंदीदा भाषा चुनें"
                 : currentLang === "mr"
                   ? "आपली आवडती भाषा निवडा"
                   : currentLang === "pa"
                     ? "ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਚੁਣੋ"
-                    : "Choose your preferred language"}
+                    : currentLang === "kn"
+                      ? "ನಿಮ್ಮ ಆದ್ಯತೆಯ ಭಾಷೆಯನ್ನು ಆರಿಸಿ"
+                      : currentLang === "ta"
+                        ? "உங்களுக்கு விருப்பமான மொழியைத் தேர்ந்தெடுக்கவும்"
+                        : "Choose your preferred language"}
             </p>
-          </div>
+          </CardHeader>
 
-          <div className="space-y-3">
+          <CardContent className="space-y-3">
             <Button
               onClick={() => handleLanguageSelect("en")}
-              className="w-full p-4 text-lg bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
             >
               English
             </Button>
             <Button
               onClick={() => handleLanguageSelect("hi")}
-              className="w-full p-4 text-lg bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
             >
               हिंदी
             </Button>
             <Button
               onClick={() => handleLanguageSelect("mr")}
-              className="w-full p-4 text-lg bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
             >
               मराठी
             </Button>
             <Button
               onClick={() => handleLanguageSelect("pa")}
-              className="w-full p-4 text-lg bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
             >
               ਪੰਜਾਬੀ
             </Button>
-          </div>
-        </div>
+            <Button
+              onClick={() => handleLanguageSelect("kn")}
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
+            >
+              ಕನ್ನಡ
+            </Button>
+            <Button
+              onClick={() => handleLanguageSelect("ta")}
+              className="w-full p-4 text-lg transition-all duration-200 hover:scale-105"
+            >
+              தமிழ்
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-green-600 text-white p-4 flex items-center">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowLanguageSelection(true)}
-          className="text-white hover:bg-green-700 p-2 mr-3"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="text-xl font-semibold text-center flex-1 mr-11">{translations.myProfile || "My Profile"}</h1>
-      </div>
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 glass-effect">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" onClick={() => setShowLanguageSelection(true)} className="p-2">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div className="flex items-center gap-2">
+              <Leaf className="h-6 w-6 text-primary animate-pulse" />
+              <span className="text-lg font-bold text-foreground gradient-text">{translations.title}</span>
+            </div>
+          </div>
+
+          {/* Language Selector */}
+          <div className="flex gap-1">
+            {(["en", "hi", "mr", "pa", "kn", "ta"] as const).map((lang) => (
+              <Button
+                key={lang}
+                variant={currentLang === lang ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setCurrentLang(lang)}
+                className="text-xs px-3 py-1 h-8 transition-all duration-200 hover:scale-105"
+              >
+                {lang === "en" ? "EN" : lang === "hi" ? "हि" : lang === "mr" ? "मर" : lang === "pa" ? "ਪੰ" : lang === "kn" ? "ಕ" : "த"}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </header>
 
       {/* Form */}
-      <div className="p-6 space-y-4">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Mobile Number */}
-          <div>
-            <Input
-              type="tel"
-              placeholder={translations.mobileNumber || "Mobile Number"}
-              value={formData.mobileNumber}
-              onChange={(e) => setFormData((prev) => ({ ...prev, mobileNumber: e.target.value }))}
-              className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg"
-              maxLength={10}
-            />
-          </div>
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        <Card className="glass-effect animate-slide-up">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-foreground gradient-text">
+              {translations.myProfile || "My Profile"}
+            </CardTitle>
+            <p className="text-muted-foreground text-pretty">
+              {translations.loginDescription || "Please provide your details to get started."}
+            </p>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Mobile Number */}
+              <div>
+                <Input
+                  type="tel"
+                  placeholder={translations.mobileNumber || "Mobile Number"}
+                  value={formData.mobileNumber}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, mobileNumber: e.target.value }))}
+                  maxLength={10}
+                />
+              </div>
 
-          {/* First Name */}
-          <div>
-            <Input
-              type="text"
-              placeholder={translations.firstName || "First Name"}
-              value={formData.firstName}
-              onChange={(e) => setFormData((prev) => ({ ...prev, firstName: e.target.value }))}
-              className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg"
-            />
-          </div>
+              {/* First Name */}
+              <div>
+                <Input
+                  type="text"
+                  placeholder={translations.firstName || "First Name"}
+                  value={formData.firstName}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, firstName: e.target.value }))}
+                />
+              </div>
 
-          {/* Last Name */}
-          <div>
-            <Input
-              type="text"
-              placeholder={translations.lastName || "Last Name"}
-              value={formData.lastName}
-              onChange={(e) => setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
-              className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg"
-            />
-          </div>
+              {/* Last Name */}
+              <div>
+                <Input
+                  type="text"
+                  placeholder={translations.lastName || "Last Name"}
+                  value={formData.lastName}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
+                />
+              </div>
 
-          {/* State Selection */}
-          <div>
-            <Select value={formData.state} onValueChange={handleStateChange}>
-              <SelectTrigger className="w-full p-4 text-lg bg-green-600 text-white border-0 rounded-lg">
-                <SelectValue placeholder={translations.selectState || "Select State"} />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(statesData).map((state) => (
-                  <SelectItem key={state} value={state}>
-                    {state}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* State Selection */}
+              <div>
+                <Select value={formData.state} onValueChange={handleStateChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={translations.selectState || "Select State"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(statesData).map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* District Selection */}
-          <div>
-            <Select value={formData.district} onValueChange={handleDistrictChange} disabled={!formData.state}>
-              <SelectTrigger className="w-full p-4 text-lg bg-green-600 text-white border-0 rounded-lg">
-                <SelectValue placeholder={translations.selectDistrict || "Select District"} />
-              </SelectTrigger>
-              <SelectContent>
-                {availableDistricts.map((district) => (
-                  <SelectItem key={district} value={district}>
-                    {district}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* District Selection */}
+              <div>
+                <Select value={formData.district} onValueChange={handleDistrictChange} disabled={!formData.state}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={translations.selectDistrict || "Select District"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableDistricts.map((district) => (
+                      <SelectItem key={district} value={district}>
+                        {district}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* Taluka Selection */}
-          <div>
-            <Select value={formData.taluka} onValueChange={handleTalukaChange} disabled={!formData.district}>
-              <SelectTrigger className="w-full p-4 text-lg bg-green-600 text-white border-0 rounded-lg">
-                <SelectValue placeholder={translations.selectTaluka || "Select Taluka"} />
-              </SelectTrigger>
-              <SelectContent>
-                {availableTalukas.map((taluka) => (
-                  <SelectItem key={taluka} value={taluka}>
-                    {taluka}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* Taluka Selection */}
+              <div>
+                <Select value={formData.taluka} onValueChange={handleTalukaChange} disabled={!formData.district}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={translations.selectTaluka || "Select Taluka"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableTalukas.map((taluka) => (
+                      <SelectItem key={taluka} value={taluka}>
+                        {taluka}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* Village Selection */}
-          <div>
-            <Select
-              value={formData.village}
-              onValueChange={(value) => setFormData((prev) => ({ ...prev, village: value }))}
-              disabled={!formData.taluka}
-            >
-              <SelectTrigger className="w-full p-4 text-lg bg-green-600 text-white border-0 rounded-lg">
-                <SelectValue placeholder={translations.selectVillage || "Select Village"} />
-              </SelectTrigger>
-              <SelectContent>
-                {availableVillages.map((village) => (
-                  <SelectItem key={village} value={village}>
-                    {village}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* Village Selection */}
+              <div>
+                <Select
+                  value={formData.village}
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, village: value }))}
+                  disabled={!formData.taluka}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={translations.selectVillage || "Select Village"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableVillages.map((village) => (
+                      <SelectItem key={village} value={village}>
+                        {village}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* Submit Button */}
-          <div className="pt-6">
-            <Button
-              type="submit"
-              className="w-full bg-gray-800 hover:bg-gray-900 text-white text-lg py-4 rounded-lg font-semibold"
-            >
-              {translations.update || "UPDATE"}
-            </Button>
-          </div>
-        </form>
+              {/* Submit Button */}
+              <div className="pt-6">
+                <Button
+                  type="submit"
+                  className="w-full text-lg py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 pulse-glow"
+                >
+                  {translations.update || "UPDATE"}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
