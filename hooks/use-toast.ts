@@ -8,18 +8,23 @@ import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
-type ToasterToast = ToastProps & {
+// Redefine ToasterToast to explicitly list its properties
+type ToasterToast = {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  variant?: ToastProps['variant'] // Inherit variant type from ToastProps
+  className?: string // Inherit className type
+  open?: boolean // Explicitly define open state
+  onOpenChange?: (open: boolean) => void // Explicitly define onOpenChange handler
 }
 
 const actionTypes = {
   ADD_TOAST: 'ADD_TOAST',
   UPDATE_TOAST: 'UPDATE_TOAST',
   DISMISS_TOAST: 'DISMISS_TOAST',
-  REMOVE_TOAST',
+  REMOVE_TOAST: 'REMOVE_TOAST',
 } as const
 
 let count = 0
@@ -123,6 +128,8 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.filter((t) => t.id !== action.toastId),
       }
+    default:
+      return state
   }
 }
 
@@ -137,9 +144,10 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, 'id'>
+type Toast = Omit<ToasterToast, 'id' | 'open' | 'onOpenChange'> // Omit these as they are handled internally by _createToast
 
-function createToast({ ...props }: Toast) {
+// Renamed internal function to _createToast to avoid naming conflict
+function _createToast({ ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -168,13 +176,13 @@ function createToast({ ...props }: Toast) {
   }
 }
 
-const toast = {
-  ...createToast,
+// Export `toast` as a callable function with `success` and `error` methods
+const toast = Object.assign(_createToast, {
   success: (title: React.ReactNode, description?: React.ReactNode) =>
-    createToast({ title, description, variant: 'default' }),
+    _createToast({ title, description, variant: 'default' }),
   error: (title: React.ReactNode, description?: React.ReactNode) =>
-    createToast({ title, description, variant: 'destructive' }),
-};
+    _createToast({ title, description, variant: 'destructive' }),
+});
 
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
@@ -191,7 +199,7 @@ function useToast() {
 
   return {
     ...state,
-    toast,
+    toast, // Now refers to the Object.assign'ed `toast`
     dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
   }
 }
