@@ -28,10 +28,10 @@ export default function ClientLayout({
         <meta name="msapplication-TileColor" content="#2d5016" />
         <meta name="msapplication-tap-highlight" content="no" />
 
-        <link rel="apple-touch-icon" href="/placeholder-logo.png" />
-        <link rel="icon" type="image/png" href="/placeholder-logo.png" />
+        <link rel="apple-touch-icon" href="/agricultural-app-icon.jpg" />
+        <link rel="icon" type="image/svg+xml" href="/agricultural-app-icon.jpg" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="shortcut icon" href="/placeholder-logo.png" />
+        <link rel="shortcut icon" href="/agricultural-app-icon.jpg" />
 
         <script
           dangerouslySetInnerHTML={{
