@@ -237,12 +237,11 @@ const dashboardLanguages: Record<string, DashboardLanguageContent> = {
 }
 
 export default function Dashboard() {
-  const { currentLang, setCurrentLang, hasSelectedLanguage } = useLanguage()
+  const { currentLang, setCurrentLang, translations: t } = useLanguage() // Removed hasSelectedLanguage
   const [isListening, setIsListening] = useState(false)
   const [voiceStatus, setVoiceStatus] = useState<"idle" | "listening" | "processing">("idle")
   const [isVisible, setIsVisible] = useState(false)
   const router = useRouter()
-  const t = dashboardLanguages[currentLang]
 
   useEffect(() => {
     setIsVisible(true)
@@ -303,21 +302,20 @@ export default function Dashboard() {
             <span className="text-lg font-bold text-foreground gradient-text">{t.title}</span>
           </div>
 
-          {!hasSelectedLanguage && (
-            <div className="flex gap-1">
-              {Object.keys(dashboardLanguages).map((lang) => (
-                <Button
-                  key={lang}
-                  variant={currentLang === lang ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setCurrentLang(lang as Language)}
-                  className="text-xs px-2 py-1 h-7 transition-all duration-200 hover:scale-105"
-                >
-                  {lang.toUpperCase()}
-                </Button>
-              ))}
-            </div>
-          )}
+          {/* Language Selector (always visible now) */}
+          <div className="flex gap-1">
+            {Object.keys(dashboardLanguages).map((lang) => (
+              <Button
+                key={lang}
+                variant={currentLang === lang ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setCurrentLang(lang as Language)}
+                className="text-xs px-2 py-1 h-7 transition-all duration-200 hover:scale-105"
+              >
+                {lang.toUpperCase()}
+              </Button>
+            ))}
+          </div>
         </div>
       </header>
 

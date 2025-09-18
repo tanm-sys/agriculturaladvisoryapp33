@@ -8,7 +8,7 @@ interface LanguageContextType {
   currentLang: Language
   setCurrentLang: (lang: Language) => void
   translations: any
-  hasSelectedLanguage: boolean
+  // hasSelectedLanguage: boolean; // Removed
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
@@ -591,30 +591,33 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [currentLang, setCurrentLangState] = useState<Language>("en")
-  const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false)
+  const [currentLang, setCurrentLangState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem("krishi-language") as Language;
+      if (savedLang && ["en", "hi", "mr", "pa", "kn", "ta"].includes(savedLang)) {
+        return savedLang;
+      }
+    }
+    return "en"; // Default language
+  });
+  // const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false); // Removed
 
   useEffect(() => {
-    const savedLang = localStorage.getItem("krishi-language") as Language
-    const hasSelected = localStorage.getItem("krishi-language-selected") === "true"
-
-    if (savedLang && ["en", "hi", "mr", "pa", "kn", "ta"].includes(savedLang)) {
-      setCurrentLangState(savedLang)
-      setHasSelectedLanguage(hasSelected)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("krishi-language", currentLang);
     }
-  }, [])
+  }, [currentLang]);
 
   const setCurrentLang = (lang: Language) => {
     setCurrentLangState(lang)
-    localStorage.setItem("krishi-language", lang)
-    localStorage.setItem("krishi-language-selected", "true")
-    setHasSelectedLanguage(true)
+    // localStorage.setItem("krishi-language-selected", "true"); // Removed
+    // setHasSelectedLanguage(true); // Removed
   }
 
   const translations = globalTranslations[currentLang]
 
   return (
-    <LanguageContext.Provider value={{ currentLang, setCurrentLang, translations, hasSelectedLanguage }}>
+    <LanguageContext.Provider value={{ currentLang, setCurrentLang, translations }}>
       {children}
     </LanguageContext.Provider>
   )

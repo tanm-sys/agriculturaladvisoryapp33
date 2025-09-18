@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation"
 import { HamburgerMenu } from "@/components/hamburger-menu"
 import { useLanguage } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
-import { ProtectedRoute } from "@/components/protected-route"
+// import { ProtectedRoute } from "@/components/protected-route" // Removed ProtectedRoute import
 
 function ProfilePageContent() {
   const { currentLang, setCurrentLang, translations } = useLanguage()
@@ -93,6 +93,7 @@ function ProfilePageContent() {
   }
 
   if (!user) {
+    // This case should ideally not be hit with the dummy user, but good for fallback
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -383,8 +384,8 @@ function ProfilePageContent() {
 
 export default function ProfilePage() {
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute> // Removed ProtectedRoute wrapper
       <ProfilePageContent />
-    </ProtectedRoute>
+    // </ProtectedRoute>
   )
 }

@@ -22,28 +22,25 @@ import {
 import { useRouter } from "next/navigation"
 import { HamburgerMenu } from "@/components/hamburger-menu"
 import { AdvertisementCarousel } from "@/components/advertisement-carousel"
-import { useLanguage } from "@/contexts/language-context"
+import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { useAuth } from "@/contexts/auth-context"
 
 export default function LandingPage() {
-  const { currentLang, setCurrentLang, translations: t, hasSelectedLanguage } = useLanguage()
-  const { isAuthenticated } = useAuth()
+  const { currentLang, setCurrentLang, translations: t } = useLanguage() // Removed hasSelectedLanguage
+  const { isAuthenticated } = useAuth() // Keep isAuthenticated for potential future use, but it will always be true now
   const [isVisible, setIsVisible] = useState(false)
-  const [attemptCount, setAttemptCount] = useState(0)
+  // const [attemptCount, setAttemptCount] = useState(0) // Removed attemptCount
   const router = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login")
-      return
-    }
-
+    // No longer redirecting to login, as the app is always "authenticated"
     setIsVisible(true)
 
-    const savedAttempts = localStorage.getItem("krishi-app-attempts")
-    if (savedAttempts) {
-      setAttemptCount(Number.parseInt(savedAttempts, 10))
-    }
+    // Removed attemptCount logic
+    // const savedAttempts = localStorage.getItem("krishi-app-attempts")
+    // if (savedAttempts) {
+    //   setAttemptCount(Number.parseInt(savedAttempts, 10))
+    // }
 
     const handleScroll = () => {
       const elements = document.querySelectorAll(".animate-on-scroll")
@@ -59,18 +56,19 @@ export default function LandingPage() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [isAuthenticated, router])
+  }, []) // Removed isAuthenticated, router from dependency array
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Leaf className="h-12 w-12 text-primary animate-pulse mx-auto mb-4" />
-          <p className="text-muted-foreground">Redirecting to login...</p>
-        </div>
-      </div>
-    )
-  }
+  // No longer need to return a loading state for authentication
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="min-h-screen bg-background flex items-center justify-center">
+  //       <div className="text-center">
+  //         <Leaf className="h-12 w-12 text-primary animate-pulse mx-auto mb-4" />
+  //         <p className="text-muted-foreground">Redirecting to login...</p>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   const handleVoiceSearch = () => {
     router.push("/dashboard")
@@ -244,67 +242,63 @@ export default function LandingPage() {
             </CardContent>
           </Card>
 
-          {attemptCount < 3 && (
-            <>
-              {/* Chat Bot */}
-              <Card className="text-center p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1 glass-effect">
-                <CardHeader className="pb-3">
-                  <div
-                    className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 float-animation"
-                    style={{ animationDelay: "1.5s" }}
-                  >
-                    <MessageSquare className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg text-balance">{t.features.chatBot}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm text-pretty">{t.features.chatBotDesc}</CardDescription>
-                  <div className="flex justify-center mt-3">
-                    <Badge variant="outline" className="text-xs">
-                      <Users className="h-3 w-3 mr-1" />
-                      24/7 Support
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Chat Bot (Always visible now) */}
+          <Card className="text-center p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1 glass-effect">
+            <CardHeader className="pb-3">
+              <div
+                className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 float-animation"
+                style={{ animationDelay: "1.5s" }}
+              >
+                <MessageSquare className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle className="text-lg text-balance">{t.features.chatBot}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-sm text-pretty">{t.features.chatBotDesc}</CardDescription>
+              <div className="flex justify-center mt-3">
+                <Badge variant="outline" className="text-xs">
+                  <Users className="h-3 w-3 mr-1" />
+                  24/7 Support
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
 
-              {/* Government Schemes */}
-              <Card className="text-center p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1 glass-effect">
-                <CardHeader className="pb-3">
-                  <div
-                    className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-3 float-animation"
-                    style={{ animationDelay: "2s" }}
-                  >
-                    <Shield className="h-6 w-6 text-accent-foreground" />
-                  </div>
-                  <CardTitle className="text-lg text-balance">{t.menu.schemes}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm text-pretty">
-                    {currentLang === "hi"
-                      ? "सरकारी योजनाओं की जानकारी और आवेदन प्रक्रिया"
-                      : currentLang === "mr"
-                        ? "सरकारी योजनांची माहिती आणि अर्ज प्रक्रिया"
-                        : currentLang === "pa"
-                          ? "ਸਰਕਾਰੀ ਸਕੀਮਾਂ ਦੀ ਜਾਣਕਾਰੀ ਅਤੇ ਅਰਜ਼ੀ ਪ੍ਰਕਿਰਿਆ"
-                          : "Government schemes information and application process"}
-                  </CardDescription>
-                  <div className="flex justify-center mt-3">
-                    <Badge variant="outline" className="text-xs">
-                      <CreditCard className="h-3 w-3 mr-1" />
-                      {currentLang === "hi"
-                        ? "सरकारी"
-                        : currentLang === "mr"
-                          ? "सरकारी"
-                          : currentLang === "pa"
-                            ? "ਸਰਕਾਰੀ"
-                            : "Government"}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
+          {/* Government Schemes (Always visible now) */}
+          <Card className="text-center p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1 glass-effect">
+            <CardHeader className="pb-3">
+              <div
+                className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-3 float-animation"
+                style={{ animationDelay: "2s" }}
+              >
+                <Shield className="h-6 w-6 text-accent-foreground" />
+              </div>
+              <CardTitle className="text-lg text-balance">{t.menu.schemes}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-sm text-pretty">
+                {currentLang === "hi"
+                  ? "सरकारी योजनाओं की जानकारी और आवेदन प्रक्रिया"
+                  : currentLang === "mr"
+                    ? "सरकारी योजनांची माहिती आणि अर्ज प्रक्रिया"
+                    : currentLang === "pa"
+                      ? "ਸਰਕਾਰੀ ਸਕੀਮਾਂ ਦੀ ਜਾਣਕਾਰੀ ਅਤੇ ਅਰਜ਼ੀ ਪ੍ਰਕਿਰਿਆ"
+                      : "Government schemes information and application process"}
+              </CardDescription>
+              <div className="flex justify-center mt-3">
+                <Badge variant="outline" className="text-xs">
+                  <CreditCard className="h-3 w-3 mr-1" />
+                  {currentLang === "hi"
+                    ? "सरकारी"
+                    : currentLang === "mr"
+                      ? "सरकारी"
+                      : currentLang === "pa"
+                        ? "ਸਰਕਾਰੀ"
+                        : "Government"}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

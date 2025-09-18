@@ -411,7 +411,7 @@ const locationData: LocationData = {
 type DiagnosisStage = "upload" | "analyzing" | "results"
 
 export default function CropDiagnosis() {
-  const { currentLang, hasSelectedLanguage } = useLanguage()
+  const { currentLang } = useLanguage() // Removed hasSelectedLanguage
   const [stage, setStage] = useState<DiagnosisStage>("upload")
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [analysisProgress, setAnalysisProgress] = useState(0)
