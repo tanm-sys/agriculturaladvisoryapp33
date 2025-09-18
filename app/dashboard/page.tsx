@@ -18,12 +18,13 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
+import { LanguageSelector } from "@/components/language-selector"
 
 // Removed local DashboardLanguageContent interface and dashboardLanguages object
 // as they are now defined and managed in contexts/language-context.tsx
 
 export default function Dashboard() {
-  const { currentLang, setCurrentLang, translations: t } = useLanguage()
+  const { translations: t } = useLanguage()
   const [isListening, setIsListening] = useState(false)
   const [voiceStatus, setVoiceStatus] = useState<"idle" | "listening" | "processing">("idle")
   const [isVisible, setIsVisible] = useState(false)
@@ -89,19 +90,7 @@ export default function Dashboard() {
           </div>
 
           {/* Language Selector (always visible now) */}
-          <div className="flex gap-1">
-            {(["en", "hi", "mr", "pa", "kn", "ta"] as const).map((lang) => (
-              <Button
-                key={lang}
-                variant={currentLang === lang ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setCurrentLang(lang as Language)}
-                className="text-xs px-2 py-1 h-7 transition-all duration-200 hover:scale-105"
-              >
-                {lang.toUpperCase()}
-              </Button>
-            ))}
-          </div>
+          <LanguageSelector />
         </div>
       </header>
 

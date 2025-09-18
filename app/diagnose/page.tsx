@@ -32,6 +32,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
+import { LanguageSelector } from "@/components/language-selector"
 
 interface SoilDataEntry {
   ph: string
@@ -577,6 +578,7 @@ export default function CropDiagnosis() {
               <span className="text-lg font-bold text-foreground text-balance">{t.title}</span>
             </div>
           </div>
+          <LanguageSelector />
         </div>
       </header>
 
@@ -859,41 +861,6 @@ export default function CropDiagnosis() {
                             </div>
                           </Card>
                         )}
-                      </div>
-                    )}
-
-                    {(hasSoilCard === true || soilDataLoaded) && (
-                      <div className="space-y-4">
-                        {uploadedSoilCard && (
-                          <div className="mb-4">
-                            <h3 className="text-lg font-semibold mb-2">Uploaded Soil Health Card</h3>
-                            <div className="w-full max-w-md mx-auto border rounded-lg overflow-hidden">
-                              <img
-                                src={uploadedSoilCard || "/placeholder.svg"}
-                                alt="Soil Health Card"
-                                className="w-full h-auto object-contain"
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        <h3 className="text-lg font-semibold text-foreground">{t.soilParameters}</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {Object.entries(sampleSoilData).map(([key, data]) => (
-                            <Card key={key} className="p-4">
-                              <div className="flex justify-between items-center mb-2">
-                                <span className="font-medium text-sm">
-                                  {t.soilData[key as keyof typeof t.soilData]}
-                                </span>
-                                <Badge variant={getStatusColor(data.status)} className="text-xs">
-                                  {data.status}
-                                </Badge>
-                              </div>
-                              <div className="text-lg font-bold text-foreground">{data.value}</div>
-                              <div className="text-xs text-muted-foreground">Range: {data.range}</div>
-                            </Card>
-                          ))}
-                        </div>
                       </div>
                     )}
                   </CardContent>

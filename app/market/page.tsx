@@ -19,6 +19,7 @@ import {
   AlertCircle,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { LanguageSelector } from "@/components/language-selector"
 
 // Language support for market intelligence
 const marketLanguages = {
@@ -367,19 +368,7 @@ export default function MarketIntelligence() {
             </Button>
 
             {/* Language Selector */}
-            <div className="flex gap-1">
-              {Object.keys(marketLanguages).map((lang) => (
-                <Button
-                  key={lang}
-                  variant={currentLang === lang ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setCurrentLang(lang as keyof typeof marketLanguages)}
-                  className="text-xs px-2 py-1 h-7"
-                >
-                  {lang.toUpperCase()}
-                </Button>
-              ))}
-            </div>
+            <LanguageSelector />
           </div>
         </div>
       </header>

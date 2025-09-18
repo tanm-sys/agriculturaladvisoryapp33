@@ -13,9 +13,10 @@ import { Phone, Mail, MapPin, Send, ArrowLeft, Leaf, MessageSquare, Clock, Check
 import { useRouter } from "next/navigation"
 import { HamburgerMenu } from "@/components/hamburger-menu"
 import { useLanguage } from "@/contexts/language-context"
+import { LanguageSelector } from "@/components/language-selector"
 
 export default function ContactPage() {
-  const { currentLang, setCurrentLang, translations } = useLanguage()
+  const { translations } = useLanguage()
   const [isVisible, setIsVisible] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -114,19 +115,7 @@ export default function ContactPage() {
           </div>
 
           {/* Language Selector */}
-          <div className="flex gap-1">
-            {(["en", "hi", "mr", "pa"] as const).map((lang) => (
-              <Button
-                key={lang}
-                variant={currentLang === lang ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setCurrentLang(lang)}
-                className="text-xs px-3 py-1 h-8 transition-all duration-200 hover:scale-105"
-              >
-                {lang === "en" ? "EN" : lang === "hi" ? "हि" : lang === "mr" ? "मर" : "ਪੰ"}
-              </Button>
-            ))}
-          </div>
+          <LanguageSelector />
         </div>
       </header>
 

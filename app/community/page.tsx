@@ -19,6 +19,7 @@ import {
   User,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { LanguageSelector } from "@/components/language-selector"
 
 interface Question {
   id: number
@@ -289,19 +290,7 @@ export default function CommunityPage() {
           </div>
 
           {/* Language Selector */}
-          <div className="flex gap-1">
-            {Object.keys(communityLanguages).map((lang) => (
-              <Button
-                key={lang}
-                variant={currentLang === lang ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setCurrentLang(lang as keyof typeof communityLanguages)}
-                className="text-xs px-2 py-1 h-7"
-              >
-                {lang.toUpperCase()}
-              </Button>
-            ))}
-          </div>
+          <LanguageSelector />
         </div>
       </header>
 

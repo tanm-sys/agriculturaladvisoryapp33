@@ -24,9 +24,10 @@ import { HamburgerMenu } from "@/components/hamburger-menu"
 import { AdvertisementCarousel } from "@/components/advertisement-carousel"
 import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { useAuth } from "@/contexts/auth-context"
+import { LanguageSelector } from "@/components/language-selector"
 
 export default function LandingPage() {
-  const { currentLang, setCurrentLang, translations: t } = useLanguage() // Removed hasSelectedLanguage
+  const { translations: t, currentLang } = useLanguage() // Destructure currentLang here
   const { isAuthenticated } = useAuth() // Keep isAuthenticated for potential future use, but it will always be true now
   const [isVisible, setIsVisible] = useState(false)
   // const [attemptCount, setAttemptCount] = useState(0) // Removed attemptCount
@@ -95,19 +96,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex gap-1">
-            {(["en", "hi", "mr", "pa"] as const).map((lang) => (
-              <Button
-                key={lang}
-                variant={currentLang === lang ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setCurrentLang(lang)}
-                className="text-xs px-3 py-1 h-8 transition-all duration-200 hover:scale-105"
-              >
-                {lang === "en" ? "EN" : lang === "hi" ? "हि" : lang === "mr" ? "मर" : "ਪੰ"}
-              </Button>
-            ))}
-          </div>
+          {/* Language Selector */}
+          <LanguageSelector />
         </div>
       </header>
 

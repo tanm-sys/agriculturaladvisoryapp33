@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { LanguageSelector } from "@/components/language-selector"
 
 interface SchemeContact {
   phone: string
@@ -770,10 +771,13 @@ export default function SchemesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-4">
       <div className="max-w-6xl mx-auto">
-        <Button onClick={() => router.push("/")} variant="ghost" className="mb-4 text-green-700 hover:text-green-800">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          {t.backToHome}
-        </Button>
+        <div className="flex items-center justify-between mb-4">
+          <Button onClick={() => router.push("/")} variant="ghost" className="text-green-700 hover:text-green-800">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t.backToHome}
+          </Button>
+          <LanguageSelector />
+        </div>
 
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-800 mb-2">{t.title}</h1>

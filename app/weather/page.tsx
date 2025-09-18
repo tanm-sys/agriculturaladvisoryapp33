@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Cloud, CloudRain, Sun, Wind, Droplets, Eye, ArrowLeft, Calendar, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { LanguageSelector } from "@/components/language-selector"
 
 interface AlertItem {
   type: string
@@ -191,19 +192,7 @@ export default function WeatherPage() {
           </div>
 
           {/* Language Selector */}
-          <div className="flex gap-1">
-            {Object.keys(weatherLanguages).map((lang) => (
-              <Button
-                key={lang}
-                variant={currentLang === lang ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setCurrentLang(lang as keyof typeof weatherLanguages)}
-                className="text-xs px-2 py-1 h-7"
-              >
-                {lang.toUpperCase()}
-              </Button>
-            ))}
-          </div>
+          <LanguageSelector />
         </div>
       </header>
 
