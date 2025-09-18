@@ -4,16 +4,170 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 
 export type Language = "en" | "hi" | "mr" | "pa" | "kn" | "ta"
 
+interface Advisory {
+  title: string
+  description: string
+  time: string
+  priority: "high" | "medium" | "low"
+}
+
+interface WeatherInfo {
+  temp: string
+  condition: string
+  humidity: string
+  rainfall: string
+}
+
+interface PriceInfo {
+  crop: string
+  price: string
+  change: string
+}
+
+interface DashboardLanguageContent {
+  title: string
+  welcome: string
+  voicePrompt: string
+  quickActions: string
+  recentAdvisories: string
+  todayWeather: string
+  marketPrices: string
+  actions: {
+    cropDiagnosis: string
+    cropDiagnosisDesc: string
+    marketPrices: string
+    marketPricesDesc: string
+    weather: string
+    weatherDesc: string
+    community: string
+    communityDesc: string
+  }
+  advisories: Advisory[]
+  weather: WeatherInfo
+  prices: PriceInfo[]
+  voiceListening: string
+  voiceProcessing: string
+  speakNow: string
+}
+
+interface GlobalTranslations {
+  title: string
+  subtitle: string
+  description: string
+  getStarted: string
+  voiceSearch: string
+  menu: {
+    home: string
+    profile: string
+    schemes: string
+    contact: string
+    chatbot: string
+  }
+  features: {
+    cropAdvisory: string
+    cropAdvisoryDesc: string
+    marketPrice: string
+    marketPriceDesc: string
+    weather: string
+    weatherDesc: string
+    soilHealth: string
+    soilHealthDesc: string
+    chatBot: string
+    chatBotDesc: string
+  }
+  profile: {
+    title: string
+    personalInfo: string
+    farmInfo: string
+    statistics: string
+    edit: string
+    save: string
+    cancel: string
+    back: string
+    fields: {
+      fullName: string
+      phone: string
+      email: string
+      village: string
+      district: string
+      state: string
+      farmSize: string
+      cropTypes: string
+      experience: string
+      bio: string
+    }
+    placeholders: {
+      fullName: string
+      phone: string
+      email: string
+      village: string
+      district: string
+      state: string
+      farmSize: string
+      cropTypes: string
+      experience: string
+      bio: string
+    }
+    stats: {
+      totalQueries: string
+      cropsDiagnosed: string
+      advisoriesReceived: string
+      communityPosts: string
+    }
+  }
+  contact: {
+    title: string
+    subtitle: string
+    form: {
+      fullName: string
+      village: string
+      query: string
+      submit: string
+      success: string
+    }
+    placeholders: {
+      fullName: string
+      village: string
+      query: string
+    }
+  }
+  ads: {
+    fertilizer: string
+    fertilizerDesc: string
+    seeds: string
+    seedsDesc: string
+    equipment: string
+    equipmentDesc: string
+    insurance: string
+    insuranceDesc: string
+  }
+  states: string
+  languages: string
+  support: string
+  logout?: string // Added logout for hamburger menu
+  loginDescription?: string // Added for login page
+  mobileNumber?: string
+  firstName?: string
+  lastName?: string
+  selectState?: string
+  selectDistrict?: string
+  selectTaluka?: string
+  selectVillage?: string
+  update?: string
+  fillAllFields?: string
+  invalidMobile?: string
+  dashboard: DashboardLanguageContent // Added dashboard translations
+}
+
 interface LanguageContextType {
   currentLang: Language
   setCurrentLang: (lang: Language) => void
-  translations: any
-  // hasSelectedLanguage: boolean; // Removed
+  translations: GlobalTranslations
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
-const globalTranslations = {
+const globalTranslations: Record<Language, GlobalTranslations> = {
   en: {
     title: "KrishiMitra",
     subtitle: "Your Digital Agricultural Advisor",
@@ -23,7 +177,7 @@ const globalTranslations = {
     menu: {
       home: "Home",
       profile: "My Profile",
-      schemes: "Government Schemes", // Added schemes translation
+      schemes: "Government Schemes",
       contact: "Contact",
       chatbot: "Chat Bot",
     },
@@ -108,6 +262,65 @@ const globalTranslations = {
     states: "Serving farmers across India",
     languages: "Available in Hindi, Marathi, English & Punjabi",
     support: "Free Support: 1800-XXX-XXXX",
+    logout: "Logout",
+    loginDescription: "Please provide your details to get started.",
+    mobileNumber: "Mobile Number",
+    firstName: "First Name",
+    lastName: "Last Name",
+    selectState: "Select State",
+    selectDistrict: "Select District",
+    selectTaluka: "Select Taluka",
+    selectVillage: "Select Village",
+    update: "UPDATE",
+    fillAllFields: "Please fill all fields",
+    invalidMobile: "Please enter a valid 10-digit mobile number",
+    dashboard: {
+      title: "KrishiMitra Dashboard",
+      welcome: "Welcome back, Farmer",
+      voicePrompt: "Tap to speak your question",
+      quickActions: "Quick Actions",
+      recentAdvisories: "Recent Advisories",
+      todayWeather: "Today's Weather",
+      marketPrices: "Market Prices",
+      actions: {
+        cropDiagnosis: "Crop Diagnosis",
+        cropDiagnosisDesc: "Photo diagnosis",
+        marketPrices: "Market Prices",
+        marketPricesDesc: "Live rates",
+        weather: "Weather",
+        weatherDesc: "7-day forecast",
+        community: "Community",
+        communityDesc: "Ask experts",
+      },
+      advisories: [
+        {
+          title: "Cotton Bollworm Alert",
+          description: "Monitor your cotton crops for early signs",
+          time: "2 hours ago",
+          priority: "high",
+        },
+        {
+          title: "Fertilizer Application",
+          description: "Best time for nitrogen application",
+          time: "1 day ago",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "Partly Cloudy",
+        humidity: "65%",
+        rainfall: "20mm expected",
+      },
+      prices: [
+        { crop: "Cotton", price: "₹6,200/quintal", change: "+2.5%" },
+        { crop: "Wheat", price: "₹2,150/quintal", change: "-1.2%" },
+        { crop: "Rice", price: "₹3,800/quintal", change: "+0.8%" },
+      ],
+      voiceListening: "Listening...",
+      voiceProcessing: "Processing your question...",
+      speakNow: "Speak now",
+    },
   },
   hi: {
     title: "कृषिमित्र",
@@ -118,7 +331,7 @@ const globalTranslations = {
     menu: {
       home: "होम",
       profile: "मेरी प्रोफाइल",
-      schemes: "सरकारी योजनाएं", // Added schemes translation in Hindi
+      schemes: "सरकारी योजनाएं",
       contact: "संपर्क",
       chatbot: "चैट बॉट",
     },
@@ -203,6 +416,65 @@ const globalTranslations = {
     states: "भारत भर के किसानों की सेवा",
     languages: "हिंदी, मराठी, अंग्रेजी और पंजाबी में उपलब्ध",
     support: "निःशुल्क सहायता: 1800-XXX-XXXX",
+    logout: "लॉग आउट",
+    loginDescription: "शुरू करने के लिए कृपया अपना विवरण प्रदान करें।",
+    mobileNumber: "मोबाइल नंबर",
+    firstName: "पहला नाम",
+    lastName: "अंतिम नाम",
+    selectState: "राज्य चुनें",
+    selectDistrict: "जिला चुनें",
+    selectTaluka: "तालुका चुनें",
+    selectVillage: "गांव चुनें",
+    update: "अपडेट करें",
+    fillAllFields: "कृपया सभी फ़ील्ड भरें",
+    invalidMobile: "कृपया एक वैध 10-अंकीय मोबाइल नंबर दर्ज करें",
+    dashboard: {
+      title: "कृषिमित्र डॅशबोर्ड",
+      welcome: "परत स्वागत, शेतकरी",
+      voicePrompt: "तुमचा प्रश्न बोलण्यासाठी टॅप करा",
+      quickActions: "त्वरित क्रिया",
+      recentAdvisories: "अलीकडील सल्ले",
+      todayWeather: "आजचे हवामान",
+      marketPrices: "बाजार भाव",
+      actions: {
+        cropDiagnosis: "पीक निदान",
+        cropDiagnosisDesc: "फोटो निदान",
+        marketPrices: "बाजार भाव",
+        marketPricesDesc: "थेट दर",
+        weather: "हवामान",
+        weatherDesc: "७ दिवसांचा अंदाज",
+        community: "समुदाय",
+        communityDesc: "तज्ञांना विचारा",
+      },
+      advisories: [
+        {
+          title: "कपास बॉलवर्म अलर्ट",
+          description: "कपास की फसलों में शुरुआती लक्षणों के लिए निगरानी करें",
+          time: "2 घंटे पहले",
+          priority: "high",
+        },
+        {
+          title: "उर्वरक आवेदन",
+          description: "नाइट्रोजन आवेदन के लिए सबसे अच्छा समय",
+          time: "1 दिन पहले",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "अंशतः ढगाळ",
+        humidity: "65%",
+        rainfall: "20मिमी अपेक्षित",
+      },
+      prices: [
+        { crop: "कपास", price: "₹6,200/क्विंटल", change: "+2.5%" },
+        { crop: "गेहूं", price: "₹2,150/क्विंटल", change: "-1.2%" },
+        { crop: "चावल", price: "₹3,800/क्विंटल", change: "+0.8%" },
+      ],
+      voiceListening: "सुन रहा है...",
+      voiceProcessing: "आपके प्रश्न की प्रक्रिया कर रहा है...",
+      speakNow: "अभी बोलें",
+    },
   },
   mr: {
     title: "कृषीमित्र",
@@ -213,7 +485,7 @@ const globalTranslations = {
     menu: {
       home: "होम",
       profile: "माझी प्रोफाइल",
-      schemes: "सरकारी योजना", // Added schemes translation in Marathi
+      schemes: "सरकारी योजना",
       contact: "संपर्क",
       chatbot: "चॅट बॉट",
     },
@@ -298,6 +570,65 @@ const globalTranslations = {
     states: "संपूर्ण भारतातील शेतकऱ्यांची सेवा",
     languages: "हिंदी, मराठी, इंग्रजी आणि पंजाबीमध्ये उपलब्ध",
     support: "मोफत सहाय्य: 1800-XXX-XXXX",
+    logout: "लॉग आउट",
+    loginDescription: "सुरुवात करण्यासाठी कृपया आपले तपशील प्रदान करा.",
+    mobileNumber: "मोबाइल नंबर",
+    firstName: "पहिले नाव",
+    lastName: "आडनाव",
+    selectState: "राज्य निवडा",
+    selectDistrict: "जिल्हा निवडा",
+    selectTaluka: "तालुका निवडा",
+    selectVillage: "गाव निवडा",
+    update: "अपडेट करा",
+    fillAllFields: "कृपया सर्व फील्ड भरा",
+    invalidMobile: "कृपया वैध 10-अंकी मोबाइल नंबर प्रविष्ट करा",
+    dashboard: {
+      title: "कृषीमित्र डॅशबोर्ड",
+      welcome: "परत स्वागत, शेतकरी",
+      voicePrompt: "तुमचा प्रश्न बोलण्यासाठी टॅप करा",
+      quickActions: "त्वरित क्रिया",
+      recentAdvisories: "अलीकडील सल्ले",
+      todayWeather: "आजचे हवामान",
+      marketPrices: "बाजार भाव",
+      actions: {
+        cropDiagnosis: "पीक निदान",
+        cropDiagnosisDesc: "फोटो निदान",
+        marketPrices: "बाजार भाव",
+        marketPricesDesc: "थेट दर",
+        weather: "हवामान",
+        weatherDesc: "७ दिवसांचा अंदाज",
+        community: "समुदाय",
+        communityDesc: "तज्ञांना विचारा",
+      },
+      advisories: [
+        {
+          title: "कापूस बॉलवर्म अलर्ट",
+          description: "कापूस पिकांवर लवकर लक्षणांसाठी निरीक्षण करा",
+          time: "2 तासांपूर्वी",
+          priority: "high",
+        },
+        {
+          title: "खत अर्ज",
+          description: "नायट्रोजन अर्जासाठी सर्वोत्तम वेळ",
+          time: "1 दिवसापूर्वी",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "अंशतः ढगाळ",
+        humidity: "65%",
+        rainfall: "20मिमी अपेक्षित",
+      },
+      prices: [
+        { crop: "कापूस", price: "₹6,200/क्विंटल", change: "+2.5%" },
+        { crop: "गहू", price: "₹2,150/क्विंटल", change: "-1.2%" },
+        { crop: "तांदूळ", price: "₹3,800/क्विंटल", change: "+0.8%" },
+      ],
+      voiceListening: "ऐकत आहे...",
+      voiceProcessing: "तुमचा प्रश्न प्रक्रिया करत आहे...",
+      speakNow: "आता बोला",
+    },
   },
   pa: {
     title: "ਕ੍ਰਿਸ਼ੀਮਿੱਤਰ",
@@ -308,7 +639,7 @@ const globalTranslations = {
     menu: {
       home: "ਹੋਮ",
       profile: "ਮੇਰੀ ਪ੍ਰੋਫਾਈਲ",
-      schemes: "ਸਰਕਾਰੀ ਸਕੀਮਾਂ", // Added schemes translation in Punjabi
+      schemes: "ਸਰਕਾਰੀ ਸਕੀਮਾਂ",
       contact: "ਸੰਪਰਕ",
       chatbot: "ਚੈਟ ਬੋਟ",
     },
@@ -393,6 +724,65 @@ const globalTranslations = {
     states: "ਪੂਰੇ ਭਾਰਤ ਵਿੱਚ ਕਿਸਾਨਾਂ ਦੀ ਸੇਵਾ",
     languages: "ਹਿੰਦੀ, ਮਰਾਠੀ, ਅੰਗਰੇਜ਼ੀ ਅਤੇ ਪੰਜਾਬੀ ਵਿੱਚ ਉਪਲਬਧ",
     support: "ਮੁਫਤ ਸਹਾਇਤਾ: 1800-XXX-XXXX",
+    logout: "ਲੌਗ ਆਉਟ",
+    loginDescription: "ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਵੇਰਵੇ ਪ੍ਰਦਾਨ ਕਰੋ।",
+    mobileNumber: "ਮੋਬਾਈਲ ਨੰਬਰ",
+    firstName: "ਪਹਿਲਾ ਨਾਮ",
+    lastName: "ਆਖਰੀ ਨਾਮ",
+    selectState: "ਰਾਜ ਚੁਣੋ",
+    selectDistrict: "ਜ਼ਿਲ੍ਹਾ ਚੁਣੋ",
+    selectTaluka: "ਤਹਿਸੀਲ ਚੁਣੋ",
+    selectVillage: "ਪਿੰਡ ਚੁਣੋ",
+    update: "ਅੱਪਡੇਟ ਕਰੋ",
+    fillAllFields: "ਕਿਰਪਾ ਕਰਕੇ ਸਾਰੇ ਖੇਤਰ ਭਰੋ",
+    invalidMobile: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ 10-ਅੰਕੀ ਮੋਬਾਈਲ ਨੰਬਰ ਦਰਜ ਕਰੋ",
+    dashboard: {
+      title: "ਕ੍ਰਿਸ਼ੀਮਿੱਤਰ ਡੈਸ਼ਬੋਰਡ",
+      welcome: "ਫਿਰ ਜੀ ਆਇਆਂ ਨੂੰ, ਕਿਸਾਨ",
+      voicePrompt: "ਆਪਣਾ ਸਵਾਲ ਬੋਲਣ ਲਈ ਟੈਪ ਕਰੋ",
+      quickActions: "ਤੁਰੰਤ ਕਾਰਵਾਈਆਂ",
+      recentAdvisories: "ਹਾਲੀਆ ਸਲਾਹਾਂ",
+      todayWeather: "ਅੱਜ ਦਾ ਮੌਸਮ",
+      marketPrices: "ਮਾਰਕੀਟ ਕੀਮਤਾਂ",
+      actions: {
+        cropDiagnosis: "ਫਸਲ ਨਿਦਾਨ",
+        cropDiagnosisDesc: "ਫੋਟੋ ਨਿਦਾਨ",
+        marketPrices: "ਮਾਰਕੀਟ ਕੀਮਤਾਂ",
+        marketPricesDesc: "ਲਾਈਵ ਰੇਟ",
+        weather: "ਮੌਸਮ",
+        weatherDesc: "7 ਦਿਨਾਂ ਦਾ ਪੂਰਵ-ਅਨੁਮਾਨ",
+        community: "ਭਾਈਚਾਰਾ",
+        communityDesc: "ਮਾਹਿਰਾਂ ਨੂੰ ਪੁੱਛੋ",
+      },
+      advisories: [
+        {
+          title: "ਕਪਾਹ ਬਾਲਵਰਮ ਅਲਰਟ",
+          description: "ਕਪਾਹ ਦੀਆਂ ਫਸਲਾਂ ਵਿੱਚ ਸ਼ੁਰੂਆਤੀ ਲੱਛਣਾਂ ਲਈ ਨਿਗਰਾਨੀ ਕਰੋ",
+          time: "2 ਘੰਟੇ ਪਹਿਲਾਂ",
+          priority: "high",
+        },
+        {
+          title: "ਖਾਦ ਦੀ ਵਰਤੋਂ",
+          description: "ਨਾਈਟ੍ਰੋਜਨ ਦੀ ਵਰਤੋਂ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਸਮਾਂ",
+          time: "1 ਦਿਨ ਪਹਿਲਾਂ",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "ਅੰਸ਼ਕ ਤੌਰ 'ਤੇ ਬੱਦਲਵਾਈ",
+        humidity: "65%",
+        rainfall: "20mm ਦੀ ਉਮੀਦ",
+      },
+      prices: [
+        { crop: "ਕਪਾਹ", price: "₹6,200/ਕੁਇੰਟਲ", change: "+2.5%" },
+        { crop: "ਕਣਕ", price: "₹2,150/ਕੁਇੰਟਲ", change: "-1.2%" },
+        { crop: "ਚਾਵਲ", price: "₹3,800/ਕੁਇੰਟਲ", change: "+0.8%" },
+      ],
+      voiceListening: "ਸੁਣ ਰਿਹਾ ਹੈ...",
+      voiceProcessing: "ਤੁਹਾਡੇ ਸਵਾਲ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰ ਰਿਹਾ ਹੈ...",
+      speakNow: "ਹੁਣ ਬੋਲੋ",
+    },
   },
   kn: {
     title: "ಕೃಷಿಮಿತ್ರ",
@@ -488,6 +878,65 @@ const globalTranslations = {
     states: "ಭಾರತದಾದ್ಯಂತ ರೈತರಿಗೆ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತಿದೆ",
     languages: "ಹಿಂದಿ, ಮರಾಠಿ, ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಪಂಜಾಬಿ ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ",
     support: "ಉಚಿತ ಬೆಂಬಲ: 1800-XXX-XXXX",
+    logout: "ಲಾಗ್ ಔಟ್",
+    loginDescription: "ಪ್ರಾರಂಭಿಸಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಒದಗಿಸಿ.",
+    mobileNumber: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    firstName: "ಮೊದಲ ಹೆಸರು",
+    lastName: "ಕೊನೆಯ ಹೆಸರು",
+    selectState: "ರಾಜ್ಯ ಆಯ್ಕೆಮಾಡಿ",
+    selectDistrict: "ಜಿಲ್ಲೆ ಆಯ್ಕೆಮಾಡಿ",
+    selectTaluka: "ತಾಲ್ಲೂಕು ಆಯ್ಕೆಮಾಡಿ",
+    selectVillage: "ಗ್ರಾಮ ಆಯ್ಕೆಮಾಡಿ",
+    update: "ಅಪ್‌ಡೇಟ್ ಮಾಡಿ",
+    fillAllFields: "ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    invalidMobile: "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+    dashboard: {
+      title: "ಕೃಷಿಮಿತ್ರ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      welcome: "ಮತ್ತೆ ಸ್ವಾಗತ, ರೈತ",
+      voicePrompt: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಹೇಳಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+      quickActions: "ತ್ವರಿತ ಕ್ರಿಯೆಗಳು",
+      recentAdvisories: "ಇತ್ತೀಚಿನ ಸಲಹೆಗಳು",
+      todayWeather: "ಇಂದಿನ ಹವಾಮಾನ",
+      marketPrices: "ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು",
+      actions: {
+        cropDiagnosis: "ಬೆಳೆ ರೋಗ ನಿರ್ಣಯ",
+        cropDiagnosisDesc: "ಫೋಟೋ ರೋಗ ನಿರ್ಣಯ",
+        marketPrices: "ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು",
+        marketPricesDesc: "ನೇರ ದರಗಳು",
+        weather: "ಹವಾಮಾನ",
+        weatherDesc: "7 ದಿನಗಳ ಮುನ್ಸೂಚನೆ",
+        community: "ಸಮುದಾಯ",
+        communityDesc: "ತಜ್ಞರನ್ನು ಕೇಳಿ",
+      },
+      advisories: [
+        {
+          title: "ಹತ್ತಿ ಕಾಯಿ ಕೊರಕ ಎಚ್ಚರಿಕೆ",
+          description: "ನಿಮ್ಮ ಹತ್ತಿ ಬೆಳೆಗಳಲ್ಲಿ ಆರಂಭಿಕ ಚಿಹ್ನೆಗಳಿಗಾಗಿ ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡಿ",
+          time: "2 ಗಂಟೆಗಳ ಹಿಂದೆ",
+          priority: "high",
+        },
+        {
+          title: "ಗೊಬ್ಬರ ಅನ್ವಯ",
+          description: "ಸಾರಜನಕ ಅನ್ವಯಕ್ಕೆ ಉತ್ತಮ ಸಮಯ",
+          time: "1 ದಿನದ ಹಿಂದೆ",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "ಭಾಗಶಃ ಮೋಡ ಕವಿದಿದೆ",
+        humidity: "65%",
+        rainfall: "20ಮಿಮೀ ನಿರೀಕ್ಷಿಸಲಾಗಿದೆ",
+      },
+      prices: [
+        { crop: "ಹತ್ತಿ", price: "₹6,200/ಕ್ವಿಂಟಾಲ್", change: "+2.5%" },
+        { crop: "ಗೋಧಿ", price: "₹2,150/ಕ್ವಿಂಟಾಲ್", change: "-1.2%" },
+        { crop: "ಭತ್ತ", price: "₹3,800/ಕ್ವಿಂಟಾಲ್", change: "+0.8%" },
+      ],
+      voiceListening: "ಕೇಳುತ್ತಿದೆ...",
+      voiceProcessing: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತಿದೆ...",
+      speakNow: "ಈಗ ಮಾತನಾಡಿ",
+    },
   },
   ta: {
     title: "கிருஷிமித்ரா",
@@ -583,6 +1032,65 @@ const globalTranslations = {
     states: "இந்தியா முழுவதும் விவசாயிகளுக்கு சேவை செய்கிறது",
     languages: "இந்தி, மராத்தி, இங்கிலீஷ் மற்றும் பஞ்சாபி மொழிகளில் கிடைக்கிறது",
     support: "இலவச ஆதரவு: 1800-XXX-XXXX",
+    logout: "வெளியேறு",
+    loginDescription: "தொடங்குவதற்கு உங்கள் விவரங்களை வழங்கவும்.",
+    mobileNumber: "கைபேசி எண்",
+    firstName: "முதல் பெயர்",
+    lastName: "கடைசி பெயர்",
+    selectState: "மாநிலத்தைத் தேர்ந்தெடுக்கவும்",
+    selectDistrict: "மாவட்டத்தைத் தேர்ந்தெடுக்கவும்",
+    selectTaluka: "வட்டத்தைத் தேர்ந்தெடுக்கவும்",
+    selectVillage: "கிராமத்தைத் தேர்ந்தெடுக்கவும்",
+    update: "புதுப்பிக்கவும்",
+    fillAllFields: "அனைத்து புலங்களையும் நிரப்பவும்",
+    invalidMobile: "சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்",
+    dashboard: {
+      title: "கிருஷிமித்ரா டாஷ்போர்டு",
+      welcome: "மீண்டும் வரவேற்கிறோம், விவசாயி",
+      voicePrompt: "உங்கள் கேள்வியைச் சொல்ல தட்டவும்",
+      quickActions: "விரைவு செயல்கள்",
+      recentAdvisories: "சமீபத்திய ஆலோசனைகள்",
+      todayWeather: "இன்றைய வானிலை",
+      marketPrices: "சந்தை விலைகள்",
+      actions: {
+        cropDiagnosis: "பயிர் நோய் கண்டறிதல்",
+        cropDiagnosisDesc: "புகைப்பட நோய் கண்டறிதல்",
+        marketPrices: "சந்தை விலைகள்",
+        marketPricesDesc: "நேரடி விலைகள்",
+        weather: "வானிலை",
+        weatherDesc: "7 நாள் முன்னறிவிப்பு",
+        community: "சமூகம்",
+        communityDesc: "நிபுணர்களிடம் கேளுங்கள்",
+      },
+      advisories: [
+        {
+          title: "பருத்தி காய் புழு எச்சரிக்கை",
+          description: "பருத்தி பயிர்களில் ஆரம்ப அறிகுறிகளுக்கு கண்காணிக்கவும்",
+          time: "2 மணிநேரத்திற்கு முன்",
+          priority: "high",
+        },
+        {
+          title: "உர பயன்பாடு",
+          description: "நைட்ரஜன் பயன்பாட்டிற்கு சிறந்த நேரம்",
+          time: "1 நாளுக்கு முன்",
+          priority: "medium",
+        },
+      ],
+      weather: {
+        temp: "28°C",
+        condition: "பகுதி மேகமூட்டம்",
+        humidity: "65%",
+        rainfall: "20மிமீ எதிர்பார்க்கப்படுகிறது",
+      },
+      prices: [
+        { crop: "பருத்தி", price: "₹6,200/குவிண்டால்", change: "+2.5%" },
+        { crop: "கோதுமை", price: "₹2,150/குவிண்டால்", change: "-1.2%" },
+        { crop: "அரிசி", price: "₹3,800/குவிண்டால்", change: "+0.8%" },
+      ],
+      voiceListening: "கேட்கிறது...",
+      voiceProcessing: "உங்கள் கேள்வியை செயலாக்குகிறது...",
+      speakNow: "இப்போது பேசுங்கள்",
+    },
   },
 }
 
@@ -600,7 +1108,6 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     }
     return "en"; // Default language
   });
-  // const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false); // Removed
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -610,8 +1117,6 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
   const setCurrentLang = (lang: Language) => {
     setCurrentLangState(lang)
-    // localStorage.setItem("krishi-language-selected", "true"); // Removed
-    // setHasSelectedLanguage(true); // Removed
   }
 
   const translations = globalTranslations[currentLang]
