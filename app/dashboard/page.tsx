@@ -17,10 +17,8 @@ import {
   MessageCircle,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
-
-// Removed local DashboardLanguageContent interface and dashboardLanguages object
-// as they are now defined and managed in contexts/language-context.tsx
+import { useLanguage, Language } from "@/contexts/language-context"
+import { NewsUpdates } from "@/components/news-updates"
 
 export default function Dashboard() {
   const { currentLang, setCurrentLang, translations: t } = useLanguage()
@@ -79,7 +77,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 glass-effect">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -233,7 +231,7 @@ export default function Dashboard() {
         </div>
 
         {/* Information Cards Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style={{ animationDelay: "0.6s" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up" style={{ animationDelay: "0.6s" }}>
           {/* Recent Advisories */}
           <Card className="glass-effect transition-all duration-300 hover:shadow-lg hover:scale-105">
             <CardHeader>
@@ -262,31 +260,10 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Weather Card */}
-          <Card className="glass-effect transition-all duration-300 hover:shadow-lg hover:scale-105">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Cloud className="h-5 w-5 text-primary animate-pulse" />
-                {t.dashboard.todayWeather}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground gradient-text">{t.dashboard.weather?.temp || "N/A"}</div>
-                <div className="text-sm text-muted-foreground">{t.dashboard.weather?.condition || "Loading..."}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span className="text-muted-foreground">Humidity:</span>
-                  <div className="font-medium">{t.dashboard.weather?.humidity || "N/A"}</div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Rainfall:</span>
-                  <div className="font-medium">{t.dashboard.weather?.rainfall || "N/A"}</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* News & Updates */}
+          <div className="md:col-span-2 lg:col-span-1">
+            <NewsUpdates />
+          </div>
 
           {/* Market Prices */}
           <Card className="glass-effect transition-all duration-300 hover:shadow-lg hover:scale-105">
@@ -318,7 +295,7 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border glass-effect">
+      <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border glass-effect z-40">
         <div className="container mx-auto px-4">
           <div className="flex justify-around py-2">
             <Button
