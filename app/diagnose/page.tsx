@@ -102,6 +102,7 @@ interface DiagnosisLanguageContent {
     retake: string
     speakResults: string
     getHelp: string
+    back: string // Added 'back' property
   }
   sampleResults: DiagnosisSampleResults
   soilData: Record<keyof SoilDataEntry, string>
@@ -142,6 +143,7 @@ const diagnosisLanguages: Record<string, DiagnosisLanguageContent> = {
       retake: "Take Another Photo",
       speakResults: "Listen to Results",
       getHelp: "Get Expert Help",
+      back: "Back", // Added translation
     },
     sampleResults: {
       disease: "Leaf Spot Disease",
@@ -202,6 +204,7 @@ const diagnosisLanguages: Record<string, DiagnosisLanguageContent> = {
       retake: "दूसरी फोटो लें",
       speakResults: "परिणाम सुनें",
       getHelp: "विशेषज्ञ सहायता लें",
+      back: "वापस", // Added translation
     },
     sampleResults: {
       disease: "पत्ती धब्बा रोग",
@@ -261,6 +264,7 @@ const diagnosisLanguages: Record<string, DiagnosisLanguageContent> = {
       retake: "दुसरा फोटो घ्या",
       speakResults: "परिणाम ऐका",
       getHelp: "तज्ञ मदत मिळवा",
+      back: "परत", // Added translation
     },
     sampleResults: {
       disease: "पानावरील डाग रोग",
@@ -320,6 +324,7 @@ const diagnosisLanguages: Record<string, DiagnosisLanguageContent> = {
       retake: "ਹੋਰ ਫੋਟੋ ਲਓ",
       speakResults: "ਨਤੀਜੇ ਸੁਣੋ",
       getHelp: "ਮਾਹਿਰ ਮਦਦ ਲਓ",
+      back: "ਵਾਪਸ", // Added translation
     },
     sampleResults: {
       disease: "ਪੱਤੇ ਦਾ ਧੱਬਾ ਰੋਗ",
@@ -674,169 +679,222 @@ export default function CropDiagnosis() {
               </TabsContent>
 
               <TabsContent value="soil" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-primary" />
-                      {t.soilHealthCard}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {hasSoilCard === null && (
-                      <div className="space-y-4">
-                        <p className="text-muted-foreground text-pretty">
-                          Do you have a Soil Health Card? We can show you detailed soil parameters or help you get one.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          <Button onClick={() => setHasSoilCard(true)} className="flex-1">
-                            <CheckCircle className="mr-2 h-4 w-4" />
-                            {t.hasCard}
-                          </Button>
-                          <Button variant="outline" onClick={() => setHasSoilCard(false)} className="flex-1">
-                            <CreditCard className="mr-2 h-4 w-4" />
-                            {t.noCard}
-                          </Button>
+                {soilDataLoaded ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <TestTube className="h-5 w-5 text-primary" />
+                        {t.soilHealthCard}
+                      </CardTitle>
+                      <div className="text-sm text-muted-foreground">
+                        {selectedState && selectedDistrict && selectedCity
+                          ? `${selectedCity}, ${selectedDistrict}, ${locationData[selectedState].name}`
+                          : "Data from uploaded card or manual entry"}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {uploadedSoilCard && (
+                        <div className="w-full h-48 rounded-lg overflow-hidden border-2 border-primary/20 mb-4">
+                          <img src={uploadedSoilCard} alt="Uploaded Soil Health Card" className="w-full h-full object-contain" />
                         </div>
-                      </div>
-                    )}
-
-                    {hasSoilCard === true && !soilDataLoaded && (
-                      <div className="space-y-4">
-                        <p className="text-muted-foreground text-pretty">
-                          Upload your Soil Health Card to view all parameters automatically.
-                        </p>
-                        <Button onClick={() => soilCardInputRef.current?.click()} className="w-full">
-                          <FileText className="mr-2 h-4 w-4" />
-                          {t.uploadCard}
-                        </Button>
-                        <input
-                          ref={soilCardInputRef}
-                          type="file"
-                          accept="image/*,.pdf"
-                          onChange={handleSoilCardUpload}
-                          className="hidden"
-                        />
-                      </div>
-                    )}
-
-                    {hasSoilCard === false && !soilDataLoaded && (
-                      <div className="space-y-6">
-                        <Card className="p-4">
-                          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <MapPin className="h-5 w-5 text-primary" />
-                            {t.locationDetails}
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="space-y-2">
-                              <Label>{t.selectState}</Label>
-                              <Select value={selectedState} onValueChange={setSelectedState}>
-                                <SelectTrigger>
-                                  <SelectValue placeholder={t.selectState} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {Object.entries(locationData).map(([code, data]) => (
-                                    <SelectItem key={code} value={code}>
-                                      {data.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
+                      )}
+                      <h3 className="text-lg font-semibold mb-2">{t.soilParameters}</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {Object.entries(sampleSoilData).map(([key, data]) => (
+                          <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium text-sm">{t.soilData[key as keyof typeof t.soilData]}</div>
+                              <div className="text-xs text-muted-foreground">{data.range}</div>
                             </div>
+                            <Badge variant={getStatusColor(data.status)} className="text-xs">
+                              {data.value} ({data.status})
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                      <Button onClick={() => {
+                        setSoilDataLoaded(false);
+                        setHasSoilCard(null);
+                        setUploadedSoilCard(null);
+                        setSelectedState("");
+                        setSelectedDistrict("");
+                        setSelectedCity("");
+                        setShowManualEntry(false);
+                        setManualSoilData({
+                          ph: "", nitrogen: "", phosphorus: "", potassium: "", organicCarbon: "",
+                          sulfur: "", zinc: "", boron: "", iron: "", manganese: "",
+                        });
+                      }} variant="outline" className="w-full mt-4">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {t.actions.back}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <CreditCard className="h-5 w-5 text-primary" />
+                        {t.soilHealthCard}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {hasSoilCard === null && (
+                        <div className="space-y-4">
+                          <p className="text-muted-foreground text-pretty">
+                            Do you have a Soil Health Card? We can show you detailed soil parameters or help you get one.
+                          </p>
+                          <div className="flex flex-col sm:flex-row gap-4">
+                            <Button onClick={() => setHasSoilCard(true)} className="flex-1">
+                              <CheckCircle className="mr-2 h-4 w-4" />
+                              {t.hasCard}
+                            </Button>
+                            <Button variant="outline" onClick={() => setHasSoilCard(false)} className="flex-1">
+                              <CreditCard className="mr-2 h-4 w-4" />
+                              {t.noCard}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
 
-                            <div className="space-y-2">
-                              <Label>{t.selectDistrict}</Label>
-                              <Select
-                                value={selectedDistrict}
-                                onValueChange={setSelectedDistrict}
-                                disabled={!selectedState}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder={t.selectDistrict} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {selectedState &&
-                                    Object.keys(locationData[selectedState].districts).map(
-                                      (district: string) => (
-                                        <SelectItem key={district} value={district}>
-                                          {district}
-                                        </SelectItem>
-                                      ),
-                                    )}
-                                </SelectContent>
-                              </Select>
-                            </div>
+                      {hasSoilCard === true && !soilDataLoaded && (
+                        <div className="space-y-4">
+                          <p className="text-muted-foreground text-pretty">
+                            Upload your Soil Health Card to view all parameters automatically.
+                          </p>
+                          <Button onClick={() => soilCardInputRef.current?.click()} className="w-full">
+                            <FileText className="mr-2 h-4 w-4" />
+                            {t.uploadCard}
+                          </Button>
+                          <input
+                            ref={soilCardInputRef}
+                            type="file"
+                            accept="image/*,.pdf"
+                            onChange={handleSoilCardUpload}
+                            className="hidden"
+                          />
+                        </div>
+                      )}
 
-                            <div className="space-y-2">
-                              <Label>{t.selectCity}</Label>
-                              <Select value={selectedCity} onValueChange={setSelectedCity} disabled={!selectedDistrict}>
-                                <SelectTrigger>
-                                  <SelectValue placeholder={t.selectCity} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {selectedState &&
-                                    selectedDistrict &&
-                                    locationData[selectedState].districts[selectedDistrict]?.map((city: string) => (
-                                      <SelectItem key={city} value={city}>
-                                        {city}
+                      {hasSoilCard === false && !soilDataLoaded && (
+                        <div className="space-y-6">
+                          <Card className="p-4">
+                            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                              <MapPin className="h-5 w-5 text-primary" />
+                              {t.locationDetails}
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div className="space-y-2">
+                                <Label>{t.selectState}</Label>
+                                <Select value={selectedState} onValueChange={setSelectedState}>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder={t.selectState} />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {Object.entries(locationData).map(([code, data]) => (
+                                      <SelectItem key={code} value={code}>
+                                        {data.name}
                                       </SelectItem>
                                     ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
-                        </Card>
+                                  </SelectContent>
+                                </Select>
+                              </div>
 
-                        <div className="text-center">
-                          <Button variant="outline" onClick={() => setShowManualEntry(true)} className="w-full"
-                            disabled={!selectedState || !selectedDistrict || !selectedCity}
-                          >
-                            <TestTube className="mr-2 h-4 w-4" />
-                            {t.manualEntry}
-                          </Button>
-                        </div>
+                              <div className="space-y-2">
+                                <Label>{t.selectDistrict}</Label>
+                                <Select
+                                  value={selectedDistrict}
+                                  onValueChange={setSelectedDistrict}
+                                  disabled={!selectedState}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder={t.selectDistrict} />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {selectedState &&
+                                      Object.keys(locationData[selectedState].districts).map(
+                                        (district: string) => (
+                                          <SelectItem key={district} value={district}>
+                                            {district}
+                                          </SelectItem>
+                                        ),
+                                      )}
+                                  </SelectContent>
+                                </Select>
+                              </div>
 
-                        {showManualEntry && (
-                          <Card className="p-4">
-                            <h3 className="text-lg font-semibold mb-4">{t.manualEntry}</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {Object.entries(manualSoilData).map(([key, value]) => (
-                                <div key={key} className="space-y-2">
-                                  <Label htmlFor={key}>{t.soilData[key as keyof typeof t.soilData]}</Label>
-                                  <Input
-                                    id={key}
-                                    type="number"
-                                    step="0.1"
-                                    value={value}
-                                    onChange={(e) =>
-                                      setManualSoilData((prev) => ({
-                                        ...prev,
-                                        [key]: e.target.value,
-                                      }))
-                                    }
-                                    placeholder="Enter value"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                              <Button
-                                onClick={handleManualSoilSubmit}
-                                disabled={!selectedState || !selectedDistrict || !selectedCity}
-                                className="flex-1"
-                              >
-                                <CheckCircle className="mr-2 h-4 w-4" />
-                                Submit Data
-                              </Button>
-                              <Button variant="outline" onClick={() => setShowManualEntry(false)} className="flex-1">
-                                Cancel
-                              </Button>
+                              <div className="space-y-2">
+                                <Label>{t.selectCity}</Label>
+                                <Select value={selectedCity} onValueChange={setSelectedCity} disabled={!selectedDistrict}>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder={t.selectCity} />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {selectedState &&
+                                      selectedDistrict &&
+                                      locationData[selectedState].districts[selectedDistrict]?.map((city: string) => (
+                                        <SelectItem key={city} value={city}>
+                                          {city}
+                                        </SelectItem>
+                                      ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
                             </div>
                           </Card>
-                        )}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+
+                          <div className="text-center">
+                            <Button variant="outline" onClick={() => setShowManualEntry(true)} className="w-full"
+                              disabled={!selectedState || !selectedDistrict || !selectedCity}
+                            >
+                              <TestTube className="mr-2 h-4 w-4" />
+                              {t.manualEntry}
+                            </Button>
+                          </div>
+
+                          {showManualEntry && (
+                            <Card className="p-4">
+                              <h3 className="text-lg font-semibold mb-4">{t.manualEntry}</h3>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {Object.entries(manualSoilData).map(([key, value]) => (
+                                  <div key={key} className="space-y-2">
+                                    <Label htmlFor={key}>{t.soilData[key as keyof typeof t.soilData]}</Label>
+                                    <Input
+                                      id={key}
+                                      type="number"
+                                      step="0.1"
+                                      value={value}
+                                      onChange={(e) =>
+                                        setManualSoilData((prev) => ({
+                                          ...prev,
+                                          [key]: e.target.value,
+                                        }))
+                                      }
+                                      placeholder="Enter value"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="flex gap-4 mt-4">
+                                <Button
+                                  onClick={handleManualSoilSubmit}
+                                  disabled={!selectedState || !selectedDistrict || !selectedCity}
+                                  className="flex-1"
+                                >
+                                  <CheckCircle className="mr-2 h-4 w-4" />
+                                  Submit Data
+                                </Button>
+                                <Button variant="outline" onClick={() => setShowManualEntry(false)} className="flex-1">
+                                  Cancel
+                                </Button>
+                              </div>
+                            </Card>
+                          )}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
             </Tabs>
           </div>
