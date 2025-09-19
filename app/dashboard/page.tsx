@@ -23,6 +23,7 @@ import { BottomNavigation } from "@/components/bottom-navigation" // Import Bott
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { useAuth } from "@/contexts/auth-context" // Import useAuth
 import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
+import { HamburgerMenu } from "@/components/hamburger-menu" // Import HamburgerMenu
 
 export default function Dashboard() {
   const { translations: t } = useLanguage()
@@ -86,9 +87,12 @@ export default function Dashboard() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 glass-effect">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Leaf className="h-6 w-6 text-primary animate-pulse" />
-            <span className="text-lg font-bold text-foreground gradient-text">{t.dashboard.title}</span>
+          <div className="flex items-center gap-3">
+            <HamburgerMenu /> {/* Added HamburgerMenu */}
+            <div className="flex items-center gap-2">
+              <Leaf className="h-6 w-6 text-primary animate-pulse" />
+              <span className="text-lg font-bold text-foreground gradient-text">{t.dashboard.title}</span>
+            </div>
           </div>
 
           {/* Language Selector, Notification Bell, and Theme Toggle */}

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
+import { HamburgerMenu } from "@/components/hamburger-menu" // Import HamburgerMenu
 
 interface SchemeContact {
   phone: string
@@ -413,7 +414,7 @@ const translations: Record<string, SchemesTranslations> = {
         amount: "जमीन धारणेच्या आधारावर",
         deadline: "कधीही",
         status: "सक्रिय",
-        details: "केसीसी शेतकऱ्यांना त्यांच्या लागवड आणि इतर गरजांसाठी बँकिंग प्रणालीकडून पुरेसे आणि वेळेवर कर्ज सहाय्य प्रदान करते.",
+        details: "केसीसी शेतकऱ्यांना त्यांच्या लागवड आणि इतर गरजांसाठी बँकिंग प्रणालीकडून पुरेसे आणि वेळेवर कर्ज सहाय्य प्रदान करते。",
         benefits: ["कमी व्याज दर", "लवचिक परतफेड", "विमा संरक्षण", "एटीएम सुविधा"],
         documents: ["ओळख पुरावा", "पत्ता पुरावा", "जमीन कागदपत्रे", "उत्पन्न प्रमाणपत्र"],
         contact: {
@@ -432,7 +433,7 @@ const translations: Record<string, SchemesTranslations> = {
         deadline: "सतत",
         status: "सक्रिय",
         details:
-          "या योजनेचे उद्दिष्ट शेतकऱ्यांना मृदा आरोग्य कार्ड जारी करणे आहे ज्यामध्ये वैयक्तिक शेतांसाठी आवश्यक पोषक तत्वे आणि खतांच्या पीक-वार शिफारसी असतील.",
+          "या योजनेचे उद्दिष्ट शेतकऱ्यांना मृदा आरोग्य कार्ड जारी करणे आहे ज्यामध्ये वैयक्तिक शेतांसाठी आवश्यक पोषक तत्वे आणि खतांच्या पीक-वार शिफारसी असतील。",
         benefits: ["मोफत माती चाचणी", "पोषक तत्व शिफारसी", "वाढलेली उत्पादकता", "कमी खत खर्च"],
         documents: ["आधार कार्ड", "जमीन नोंदी", "मोबाइल नंबर"],
         contact: {
@@ -450,7 +451,7 @@ const translations: Record<string, SchemesTranslations> = {
         amount: "40-50% अनुदान",
         deadline: "स्थानिक कार्यालयाशी तपासा",
         status: "सक्रिय",
-        details: "एसएमएएम कृषी यंत्रसामग्री आणि उपकरणे खरेदीसाठी आर्थिक सहाय्याद्वारे शेती यंत्रीकरणाला प्रोत्साहन देते.",
+        details: "एसएमएएम कृषी यंत्रसामग्री आणि उपकरणे खरेदीसाठी आर्थिक सहाय्याद्वारे शेती यंत्रीकरणाला प्रोत्साहन देते。",
         benefits: ["40-50% अनुदान", "कस्टम हायरिंग केंद्रे", "प्रशिक्षण कार्यक्रम", "तंत्रज्ञान प्रदर्शन"],
         documents: ["आधार कार्ड", "बँक खाते", "जमीन नोंदी", "जात प्रमाणपत्र (लागू असल्यास)"],
         contact: {
@@ -779,6 +780,7 @@ export default function SchemesPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             {t.backToHome}
           </Button>
+          <HamburgerMenu /> {/* Added HamburgerMenu */}
           {/* Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />

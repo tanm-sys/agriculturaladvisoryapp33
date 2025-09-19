@@ -10,6 +10,7 @@ import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { useLanguage } from "@/contexts/language-context" // Import useLanguage
 import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
+import { HamburgerMenu } from "@/components/hamburger-menu" // Import HamburgerMenu
 
 interface AlertItem {
   type: string
@@ -282,6 +283,7 @@ export default function WeatherPage() {
             <Button variant="ghost" size="sm" onClick={() => router.back()}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
+            <HamburgerMenu /> {/* Added HamburgerMenu */}
             <div className="flex items-center gap-2">
               <Cloud className="h-6 w-6 text-primary" />
               <span className="text-lg font-bold text-foreground">{t.title}</span>

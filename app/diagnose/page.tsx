@@ -36,6 +36,7 @@ import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
+import { HamburgerMenu } from "@/components/hamburger-menu" // Import HamburgerMenu
 
 interface SoilDataEntry {
   ph: string
@@ -576,6 +577,7 @@ export default function CropDiagnosis() {
             <Button variant="ghost" size="sm" onClick={() => router.back()}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
+            <HamburgerMenu /> {/* Added HamburgerMenu */}
             <div className="flex items-center gap-2">
               <Leaf className="h-6 w-6 text-primary" />
               <span className="text-lg font-bold text-foreground text-balance">{t.title}</span>
