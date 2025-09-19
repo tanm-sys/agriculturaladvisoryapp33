@@ -311,6 +311,56 @@ const sampleMarketData = {
       { location: "bangalore", price: 3820, change: 1.1 },
     ],
   },
+  sugarcane: {
+    currentPrice: 3100,
+    change: 0.1,
+    trend: "stable",
+    history: [3050, 3080, 3100, 3100],
+    markets: [
+      { location: "mumbai", price: 3100, change: 0.1 },
+      { location: "pune", price: 3080, change: 0.0 },
+    ],
+  },
+  onion: {
+    currentPrice: 2500,
+    change: 5.0,
+    trend: "rising",
+    history: [2200, 2350, 2450, 2500],
+    markets: [
+      { location: "nashik", price: 2500, change: 5.0 },
+      { location: "mumbai", price: 2480, change: 4.5 },
+    ],
+  },
+  tomato: {
+    currentPrice: 1800,
+    change: -3.0,
+    trend: "falling",
+    history: [1900, 1850, 1820, 1800],
+    markets: [
+      { location: "bangalore", price: 1800, change: -3.0 },
+      { location: "chennai", price: 1780, change: -3.5 },
+    ],
+  },
+  potato: {
+    currentPrice: 1500,
+    change: 1.0,
+    trend: "stable",
+    history: [1480, 1490, 1500, 1500],
+    markets: [
+      { location: "ludhiana", price: 1500, change: 1.0 },
+      { location: "amritsar", price: 1490, change: 0.8 },
+    ],
+  },
+  soybean: {
+    currentPrice: 4500,
+    change: 0.5,
+    trend: "rising",
+    history: [4400, 4450, 4480, 4500],
+    markets: [
+      { location: "pune", price: 4500, change: 0.5 },
+      { location: "nagpur", price: 4480, change: 0.3 },
+    ],
+  },
 }
 
 export default function MarketIntelligence() {
@@ -327,8 +377,19 @@ export default function MarketIntelligence() {
   }
 
   const getCurrentCropData = () => {
-    return sampleMarketData[selectedCrop as keyof typeof sampleMarketData]
-  }
+    const data = sampleMarketData[selectedCrop as keyof typeof sampleMarketData];
+    if (data) {
+      return data;
+    }
+    // Fallback for crops not in sampleMarketData
+    return {
+      currentPrice: 0,
+      change: 0,
+      trend: "stable",
+      history: [0, 0, 0, 0],
+      markets: [],
+    };
+  };
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
