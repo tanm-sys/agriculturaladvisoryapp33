@@ -420,7 +420,7 @@ export default function CropDiagnosis() {
   const [analysisProgress, setAnalysisProgress] = useState(0)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [hasSoilCard, setHasSoilCard] = useState<boolean | null>(null)
-  const [aadhaarNumber, setAadhaarNumber] = useState("")
+  // const [aadhaarNumber, setAadhaarNumber] = useState("") // Removed aadhaarNumber state
   const [soilDataLoaded, setSoilDataLoaded] = useState(false)
   const [uploadedSoilCard, setUploadedSoilCard] = useState<string | null>(null)
 
@@ -514,12 +514,7 @@ export default function CropDiagnosis() {
     setTimeout(() => setIsSpeaking(false), 3000)
   }
 
-  const handleLinkAadhaar = () => {
-    if (aadhaarNumber.length === 12 && selectedState && selectedDistrict && selectedCity) {
-      setSoilDataLoaded(true)
-      setHasSoilCard(true)
-    }
-  }
+  // Removed handleLinkAadhaar function as it's no longer needed.
 
   const handleManualSoilSubmit = () => {
     if (selectedState && selectedDistrict && selectedCity) {
@@ -690,8 +685,7 @@ export default function CropDiagnosis() {
                     {hasSoilCard === null && (
                       <div className="space-y-4">
                         <p className="text-muted-foreground text-pretty">
-                          Do you have a Soil Health Card? We can show you detailed soil parameters or help you get one
-                          using your Aadhaar.
+                          Do you have a Soil Health Card? We can show you detailed soil parameters or help you get one.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                           <Button onClick={() => setHasSoilCard(true)} className="flex-1">
@@ -792,41 +786,13 @@ export default function CropDiagnosis() {
                           </div>
                         </Card>
 
-                        <div className="flex flex-col gap-4">
-                          <div className="space-y-4">
-                            <p className="text-muted-foreground text-pretty">
-                              Enter your Aadhaar number to link with your Soil Health Card data from government records.
-                            </p>
-                            <div className="space-y-2">
-                              <Label htmlFor="aadhaar">{t.enterAadhaar}</Label>
-                              <Input
-                                id="aadhaar"
-                                type="text"
-                                placeholder="XXXX XXXX XXXX"
-                                value={aadhaarNumber}
-                                onChange={(e) => setAadhaarNumber(e.target.value.replace(/\D/g, "").slice(0, 12))}
-                                maxLength={12}
-                              />
-                            </div>
-                            <Button
-                              onClick={handleLinkAadhaar}
-                              disabled={
-                                aadhaarNumber.length !== 12 || !selectedState || !selectedDistrict || !selectedCity
-                              }
-                              className="w-full"
-                            >
-                              <BarChart3 className="mr-2 h-4 w-4" />
-                              {t.linkAadhaar}
-                            </Button>
-                          </div>
-
-                          <div className="text-center">
-                            <div className="text-sm text-muted-foreground mb-2">or</div>
-                            <Button variant="outline" onClick={() => setShowManualEntry(true)} className="w-full">
-                              <TestTube className="mr-2 h-4 w-4" />
-                              {t.manualEntry}
-                            </Button>
-                          </div>
+                        <div className="text-center">
+                          <Button variant="outline" onClick={() => setShowManualEntry(true)} className="w-full"
+                            disabled={!selectedState || !selectedDistrict || !selectedCity}
+                          >
+                            <TestTube className="mr-2 h-4 w-4" />
+                            {t.manualEntry}
+                          </Button>
                         </div>
 
                         {showManualEntry && (
