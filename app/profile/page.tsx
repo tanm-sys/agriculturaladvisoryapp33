@@ -14,6 +14,7 @@ import { HamburgerMenu } from "@/components/hamburger-menu"
 import { useLanguage } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
 import { LanguageSelector } from "@/components/language-selector"
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 // import { ProtectedRoute } from "@/components/protected-route" // Removed ProtectedRoute import
 
 function ProfilePageContent() {
@@ -118,8 +119,11 @@ function ProfilePageContent() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 
@@ -350,7 +354,6 @@ function ProfilePageContent() {
           </Card>
         </div>
 
-        {/* Action Buttons */}
         {isEditing && (
           <div className="flex gap-4 justify-center animate-scale-in">
             <Button onClick={handleSave} className="transition-all duration-200 hover:scale-105">

@@ -21,6 +21,7 @@ import {
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 // Language support for market intelligence
 const marketLanguages = {
@@ -94,7 +95,7 @@ const marketLanguages = {
       bangalore: "बंगळूर",
       mysore: "मैसूर",
       ludhiana: "लुधियाना",
-      amritsar: "अमृतसर",
+      amritsar: "ਅੰਮ੍ਰਿਤਸਰ",
     },
     crops: {
       cotton: "कापूस",
@@ -429,6 +430,8 @@ export default function MarketIntelligence() {
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
             </Button>
 
+            {/* Notification Bell */}
+            <NotificationBell />
             {/* Language Selector */}
             <LanguageSelector />
           </div>

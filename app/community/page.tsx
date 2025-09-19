@@ -21,6 +21,7 @@ import {
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 interface Question {
   id: number
@@ -290,8 +291,11 @@ export default function CommunityPage() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 

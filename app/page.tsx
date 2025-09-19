@@ -25,6 +25,8 @@ import { AdvertisementCarousel } from "@/components/advertisement-carousel"
 import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { useAuth } from "@/contexts/auth-context"
 import { LanguageSelector } from "@/components/language-selector"
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 
 export default function LandingPage() {
   const { translations: t, currentLang } = useLanguage() // Destructure currentLang here
@@ -84,7 +86,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20"> {/* Added pb-20 for bottom navigation */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 glass-effect">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           {/* Left side - Hamburger Menu */}
@@ -96,8 +98,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Right side - Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 
@@ -316,6 +321,7 @@ export default function LandingPage() {
           <p>© 2024 KrishiMitra. Empowering farmers with technology.</p>
         </div>
       </footer>
+      <BottomNavigation />
     </div>
   )
 }

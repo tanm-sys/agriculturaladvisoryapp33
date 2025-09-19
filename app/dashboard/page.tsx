@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation"
 import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 // Removed local DashboardLanguageContent interface and dashboardLanguages object
 // as they are now defined and managed in contexts/language-context.tsx
@@ -90,8 +91,11 @@ export default function Dashboard() {
             <span className="text-lg font-bold text-foreground gradient-text">{t.dashboard.title}</span>
           </div>
 
-          {/* Language Selector (always visible now) */}
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 

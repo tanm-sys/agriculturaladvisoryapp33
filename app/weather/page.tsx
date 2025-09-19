@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Cloud, CloudRain, Sun, Wind, Droplets, Eye, ArrowLeft, Calendar, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 interface AlertItem {
   type: string
@@ -191,8 +192,11 @@ export default function WeatherPage() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 

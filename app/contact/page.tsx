@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { HamburgerMenu } from "@/components/hamburger-menu"
 import { useLanguage } from "@/contexts/language-context"
 import { LanguageSelector } from "@/components/language-selector"
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 export default function ContactPage() {
   const { translations } = useLanguage()
@@ -114,8 +115,11 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { LanguageSelector } from "@/components/language-selector"
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 interface SchemeContact {
   phone: string
@@ -197,19 +198,19 @@ const translations: Record<string, SchemesTranslations> = {
         },
       },
     ],
-    applyNow: "Apply Now",
-    viewDetails: "View Details",
-    backToHome: "Back to Home",
-    eligibility: "Eligibility",
-    amount: "Amount",
-    deadline: "Deadline",
-    status: "Status",
-    benefits: "Benefits",
-    documents: "Required Documents",
-    contact: "Contact Information",
-    phone: "Phone",
-    email: "Email",
-    website: "Website",
+    applyNow: "अभी आवेदन करें",
+    viewDetails: "विवरण देखें",
+    backToHome: "होम पर वापस",
+    eligibility: "पात्रता",
+    amount: "राशि",
+    deadline: "अंतिम तिथि",
+    status: "स्थिति",
+    benefits: "लाभ",
+    documents: "आवश्यक दस्तावेज",
+    contact: "संपर्क जानकारी",
+    phone: "फोन",
+    email: "ईमेल",
+    website: "वेबसाइट",
   },
   hi: {
     title: "सरकारी योजनाएं",
@@ -776,7 +777,11 @@ export default function SchemesPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             {t.backToHome}
           </Button>
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
 
         <div className="text-center mb-8">

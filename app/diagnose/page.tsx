@@ -34,6 +34,7 @@ import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
+import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 
 interface SoilDataEntry {
   ph: string
@@ -579,7 +580,11 @@ export default function CropDiagnosis() {
               <span className="text-lg font-bold text-foreground text-balance">{t.title}</span>
             </div>
           </div>
-          <LanguageSelector />
+          {/* Language Selector and Notification Bell */}
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 
