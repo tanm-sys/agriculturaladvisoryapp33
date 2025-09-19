@@ -33,6 +33,7 @@ import {
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 import { LanguageSelector } from "@/components/language-selector"
+import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 
 interface SoilDataEntry {
   ph: string
@@ -565,7 +566,7 @@ export default function CropDiagnosis() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20"> {/* Added pb-20 for bottom navigation */}
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -994,6 +995,7 @@ export default function CropDiagnosis() {
           </div>
         )}
       </div>
+      <BottomNavigation /> {/* Add BottomNavigation here */}
     </div>
   )
 }

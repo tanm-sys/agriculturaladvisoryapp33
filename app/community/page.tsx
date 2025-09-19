@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
+import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 
 interface Question {
   id: number
@@ -275,7 +276,7 @@ export default function CommunityPage() {
   const t = communityLanguages[currentLang]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20"> {/* Added pb-20 for bottom navigation */}
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -455,6 +456,7 @@ export default function CommunityPage() {
           </div>
         </div>
       </div>
+      <BottomNavigation /> {/* Add BottomNavigation here */}
     </div>
   )
 }

@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
+import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 
 // Language support for market intelligence
 const marketLanguages = {
@@ -347,7 +348,7 @@ export default function MarketIntelligence() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20"> {/* Added pb-20 for bottom navigation */}
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -592,6 +593,7 @@ export default function MarketIntelligence() {
           </TabsContent>
         </Tabs>
       </div>
+      <BottomNavigation /> {/* Add BottomNavigation here */}
     </div>
   )
 }

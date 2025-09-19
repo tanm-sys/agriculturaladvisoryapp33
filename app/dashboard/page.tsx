@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation"
 import { useLanguage, Language } from "@/contexts/language-context" // Import Language type
 import { LanguageSelector } from "@/components/language-selector"
+import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 
 // Removed local DashboardLanguageContent interface and dashboardLanguages object
 // as they are now defined and managed in contexts/language-context.tsx
@@ -80,7 +81,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20"> {/* Added pb-20 for bottom navigation */}
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 glass-effect">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -307,48 +308,7 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border glass-effect">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-around py-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-col gap-1 h-auto py-2 transition-all duration-200 hover:scale-105"
-              onClick={() => router.push("/dashboard")}
-            >
-              <Home className="h-5 w-5" />
-              <span className="text-xs">Home</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-col gap-1 h-auto py-2 transition-all duration-200 hover:scale-105"
-              onClick={handleCropDiagnosis}
-            >
-              <Stethoscope className="h-5 w-5" />
-              <span className="text-xs">Diagnose</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-col gap-1 h-auto py-2 transition-all duration-200 hover:scale-105"
-              onClick={handleMarketPrices}
-            >
-              <BarChart3 className="h-5 w-5" />
-              <span className="text-xs">Markets</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-col gap-1 h-auto py-2 transition-all duration-200 hover:scale-105"
-              onClick={handleCommunity}
-            >
-              <MessageCircle className="h-5 w-5" />
-              <span className="text-xs">Community</span>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <BottomNavigation />
     </div>
   )
 }
