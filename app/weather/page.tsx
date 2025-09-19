@@ -8,6 +8,7 @@ import { Cloud, CloudRain, Sun, Wind, Droplets, Eye, ArrowLeft, Calendar, MapPin
 import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { useLanguage } from "@/contexts/language-context" // Import useLanguage
 
 interface AlertItem {
   type: string
@@ -80,6 +81,40 @@ const weatherLanguages: Record<string, WeatherLanguageContent> = {
       { day: "Sun", temp: "27°C", condition: "Partly Cloudy", icon: "partly-cloudy", rain: "15%" },
     ],
   },
+  hi: {
+    title: "मौसम पूर्वानुमान",
+    currentWeather: "वर्तमान मौसम",
+    sevenDayForecast: "7-दिवसीय पूर्वानुमान",
+    hourlyForecast: "प्रति घंटा पूर्वानुमान",
+    weatherAlerts: "मौसम अलर्ट",
+    location: "आपका स्थान",
+    temperature: "तापमान",
+    humidity: "आर्द्रता",
+    windSpeed: "हवा की गति",
+    visibility: "दृश्यता",
+    rainfall: "वर्षा",
+    uvIndex: "यूवी सूचकांक",
+    back: "वापस",
+    today: "आज",
+    tomorrow: "कल",
+    alerts: [
+      {
+        type: "चेतावनी",
+        title: "भारी बारिश की उम्मीद",
+        description: "अगले 24 घंटों में भारी बारिश की उम्मीद है। फसलों को जलभराव से बचाएं।",
+        time: "अगले 24 घंटे",
+      },
+    ],
+    forecast: [
+      { day: "आज", temp: "28°C", condition: "आंशिक रूप से बादल छाए रहेंगे", icon: "partly-cloudy", rain: "20%" },
+      { day: "कल", temp: "30°C", condition: "धूप", icon: "sunny", rain: "5%" },
+      { day: "बुध", temp: "26°C", condition: "बारिश", icon: "rainy", rain: "80%" },
+      { day: "गुरु", temp: "25°C", condition: "बादल छाए रहेंगे", icon: "cloudy", rain: "40%" },
+      { day: "शुक्र", temp: "29°C", condition: "धूप", icon: "sunny", rain: "10%" },
+      { day: "शनि", temp: "31°C", condition: "गर्म", icon: "sunny", rain: "0%" },
+      { day: "रवि", temp: "27°C", condition: "आंशिक रूप से बादल छाए रहेंगे", icon: "partly-cloudy", rain: "15%" },
+    ],
+  },
   mr: {
     title: "हवामान अंदाज",
     currentWeather: "सध्याचे हवामान",
@@ -96,8 +131,23 @@ const weatherLanguages: Record<string, WeatherLanguageContent> = {
     back: "परत",
     today: "आज",
     tomorrow: "उद्या",
-    alerts: [],
-    forecast: [],
+    alerts: [
+      {
+        type: "इशारा",
+        title: "मुसळधार पावसाची शक्यता",
+        description: "पुढील 24 तासांत मुसळधार पावसाची शक्यता आहे. पिकांना पाणी साचण्यापासून वाचवा.",
+        time: "पुढील 24 तास",
+      },
+    ],
+    forecast: [
+      { day: "आज", temp: "28°C", condition: "अंशतः ढगाळ", icon: "partly-cloudy", rain: "20%" },
+      { day: "उद्या", temp: "30°C", condition: "सूर्यप्रकाशित", icon: "sunny", rain: "5%" },
+      { day: "बुध", temp: "26°C", condition: "पावसाळी", icon: "rainy", rain: "80%" },
+      { day: "गुरु", temp: "25°C", condition: "ढगाळ", icon: "cloudy", rain: "40%" },
+      { day: "शुक्र", temp: "29°C", condition: "सूर्यप्रकाशित", icon: "sunny", rain: "10%" },
+      { day: "शनि", temp: "31°C", condition: "गरम", icon: "sunny", rain: "0%" },
+      { day: "रवि", temp: "27°C", condition: "अंशतः ढगाळ", icon: "partly-cloudy", rain: "15%" },
+    ],
   },
   ta: {
     title: "வானிலை முன்னறிவிப்பு",
@@ -115,8 +165,23 @@ const weatherLanguages: Record<string, WeatherLanguageContent> = {
     back: "பின்",
     today: "இன்று",
     tomorrow: "நாளை",
-    alerts: [],
-    forecast: [],
+    alerts: [
+      {
+        type: "எச்சரிக்கை",
+        title: "கனமழை எதிர்பார்க்கப்படுகிறது",
+        description: "அடுத்த 24 மணி நேரத்தில் கனமழை எதிர்பார்க்கப்படுகிறது. பயிர்களை நீர் தேக்கத்திலிருந்து பாதுகாக்கவும்.",
+        time: "அடுத்த 24 மணி நேரம்",
+      },
+    ],
+    forecast: [
+      { day: "இன்று", temp: "28°C", condition: "பகுதி மேகமூட்டம்", icon: "partly-cloudy", rain: "20%" },
+      { day: "நாளை", temp: "30°C", condition: "சன்னி", icon: "sunny", rain: "5%" },
+      { day: "புதன்", temp: "26°C", condition: "மழை", icon: "rainy", rain: "80%" },
+      { day: "வியாழன்", temp: "25°C", condition: "மேகமூட்டம்", icon: "cloudy", rain: "40%" },
+      { day: "வெள்ளி", temp: "29°C", condition: "சன்னி", icon: "sunny", rain: "10%" },
+      { day: "சனி", temp: "31°C", condition: "சூடான", icon: "sunny", rain: "0%" },
+      { day: "ஞாயிறு", temp: "27°C", condition: "பகுதி மேகமூட்டம்", icon: "partly-cloudy", rain: "15%" },
+    ],
   },
   kn: {
     title: "ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ",
@@ -134,8 +199,23 @@ const weatherLanguages: Record<string, WeatherLanguageContent> = {
     back: "ಹಿಂದೆ",
     today: "ಇಂದು",
     tomorrow: "ನಾಳೆ",
-    alerts: [],
-    forecast: [],
+    alerts: [
+      {
+        type: "ಎಚ್ಚರಿಕೆ",
+        title: "ಭಾರೀ ಮಳೆ ನಿರೀಕ್ಷಿಸಲಾಗಿದೆ",
+        description: "ಮುಂದಿನ 24 ಗಂಟೆಗಳಲ್ಲಿ ಭಾರೀ ಮಳೆ ನಿರೀಕ್ಷಿಸಲಾಗಿದೆ. ಬೆಳೆಗಳನ್ನು ಜಲಾವೃತದಿಂದ ರಕ್ಷಿಸಿ.",
+        time: "ಮುಂದಿನ 24 ಗಂಟೆಗಳು",
+      },
+    ],
+    forecast: [
+      { day: "ಇಂದು", temp: "28°C", condition: "ಭಾಗಶಃ ಮೋಡ ಕವಿದಿದೆ", icon: "partly-cloudy", rain: "20%" },
+      { day: "ನಾಳೆ", temp: "30°C", condition: "ಸನ್ನಿ", icon: "sunny", rain: "5%" },
+      { day: "ಬುಧ", temp: "26°C", condition: "ಮಳೆ", icon: "rainy", rain: "80%" },
+      { day: "ಗುರು", temp: "25°C", condition: "ಮೋಡ ಕವಿದಿದೆ", icon: "cloudy", rain: "40%" },
+      { day: "ಶುಕ್ರ", temp: "29°C", condition: "ಸನ್ನಿ", icon: "sunny", rain: "10%" },
+      { day: "ಶನಿ", temp: "31°C", condition: "ಬಿಸಿ", icon: "sunny", rain: "0%" },
+      { day: "ಭಾನು", temp: "27°C", condition: "ಭಾಗಶಃ ಮೋಡ ಕವಿದಿದೆ", icon: "partly-cloudy", rain: "15%" },
+    ],
   },
   pa: {
     title: "ਮੌਸਮ ਪੂਰਵ-ਅਨੁਮਾਨ",
@@ -153,15 +233,30 @@ const weatherLanguages: Record<string, WeatherLanguageContent> = {
     back: "ਵਾਪਸ",
     today: "ਅੱਜ",
     tomorrow: "ਕੱਲ੍ਹ",
-    alerts: [],
-    forecast: [],
+    alerts: [
+      {
+        type: "ਚੇਤਾਵਨੀ",
+        title: "ਭਾਰੀ ਬਾਰਿਸ਼ ਦੀ ਉਮੀਦ",
+        description: "ਅਗਲੇ 24 ਘੰਟਿਆਂ ਵਿੱਚ ਭਾਰੀ ਬਾਰਿਸ਼ ਦੀ ਉਮੀਦ ਹੈ। ਫਸਲਾਂ ਨੂੰ ਜਲ ਭਰਨ ਤੋਂ ਬਚਾਓ।",
+        time: "ਅਗਲੇ 24 ਘੰਟੇ",
+      },
+    ],
+    forecast: [
+      { day: "ਅੱਜ", temp: "28°C", condition: "ਅੰਸ਼ਕ ਤੌਰ 'ਤੇ ਬੱਦਲਵਾਈ", icon: "partly-cloudy", rain: "20%" },
+      { day: "ਕੱਲ੍ਹ", temp: "30°C", condition: "ਧੁੱਪ", icon: "sunny", rain: "5%" },
+      { day: "ਬੁੱਧ", temp: "26°C", condition: "ਬਾਰਿਸ਼", icon: "rainy", rain: "80%" },
+      { day: "ਵੀਰ", temp: "25°C", condition: "ਬੱਦਲਵਾਈ", icon: "cloudy", rain: "40%" },
+      { day: "ਸ਼ੁੱਕਰ", temp: "29°C", condition: "ਧੁੱਪ", icon: "sunny", rain: "10%" },
+      { day: "ਸ਼ਨੀ", temp: "31°C", condition: "ਗਰਮ", icon: "sunny", rain: "0%" },
+      { day: "ਐਤ", temp: "27°C", condition: "ਅੰਸ਼ਕ ਤੌਰ 'ਤੇ ਬੱਦਲਵਾਈ", icon: "partly-cloudy", rain: "15%" },
+    ],
   },
 }
 
 export default function WeatherPage() {
-  const [currentLang, setCurrentLang] = useState<keyof typeof weatherLanguages>("en")
+  const { currentLang } = useLanguage()
   const router = useRouter()
-  const t = weatherLanguages[currentLang]
+  const t = weatherLanguages[currentLang] || weatherLanguages.en // Fallback to English
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {

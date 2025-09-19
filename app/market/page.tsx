@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { useLanguage } from "@/contexts/language-context" // Import useLanguage
 
 // Language support for market intelligence
 const marketLanguages = {
@@ -75,6 +76,56 @@ const marketLanguages = {
       stable: "Stable",
     },
   },
+  hi: {
+    title: "बाजार बुद्धिमत्ता",
+    subtitle: "थेट बाजार भाव और ट्रेंड",
+    selectLocation: "स्थान चुनें",
+    selectCrop: "फसल चुनें",
+    todayPrices: "आज के भाव",
+    priceHistory: "भाव इतिहास",
+    marketAnalysis: "बाजार विश्लेषण",
+    lastUpdated: "अंतिम अपडेट",
+    priceChange: "भाव परिवर्तन",
+    marketTrend: "बाजार ट्रेंड",
+    locations: {
+      mumbai: "मुंबई",
+      pune: "पुणे",
+      nashik: "नाशिक",
+      chennai: "चेन्नई",
+      coimbatore: "कोयंबटूर",
+      bangalore: "बेंगलुरु",
+      mysore: "मैसूर",
+      ludhiana: "लुधियाना",
+      amritsar: "अमृतसर",
+    },
+    crops: {
+      cotton: "कपास",
+      wheat: "गेहूं",
+      rice: "चावल",
+      sugarcane: "गन्ना",
+      onion: "प्याज",
+      tomato: "टमाटर",
+      potato: "आलू",
+      soybean: "सोयाबीन",
+    },
+    insights: {
+      title: "बाजार अंतर्दृष्टि",
+      demand: "अगले 2 हफ्तों में कपास की उच्च मांग अपेक्षित",
+      weather: "गेहूं की कटाई के लिए मौसम अनुकूल",
+      export: "चावल की किस्मों के लिए निर्यात के अवसर बढ़ रहे हैं",
+    },
+    recommendations: {
+      title: "बिक्री सिफारिशें",
+      timing: "बेचने का सबसे अच्छा समय",
+      price: "अपेक्षित मूल्य सीमा",
+      market: "अनुशंसित बाजार",
+    },
+    trends: {
+      rising: "बढ़ रहा है",
+      falling: "गिर रहा है",
+      stable: "स्थिर",
+    },
+  },
   mr: {
     title: "बाजार बुद्धिमत्ता",
     subtitle: "थेट बाजार भाव आणि ट्रेंड",
@@ -95,7 +146,7 @@ const marketLanguages = {
       bangalore: "बंगळूर",
       mysore: "मैसूर",
       ludhiana: "लुधियाना",
-      amritsar: "ਅੰਮ੍ਰਿਤਸਰ",
+      amritsar: "अमृतसर",
     },
     crops: {
       cotton: "कापूस",
@@ -365,12 +416,12 @@ const sampleMarketData = {
 }
 
 export default function MarketIntelligence() {
-  const [currentLang, setCurrentLang] = useState<keyof typeof marketLanguages>("en")
+  const { currentLang } = useLanguage()
   const [selectedLocation, setSelectedLocation] = useState("mumbai")
   const [selectedCrop, setSelectedCrop] = useState("cotton")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const router = useRouter()
-  const t = marketLanguages[currentLang]
+  const t = marketLanguages[currentLang] || marketLanguages.en // Fallback to English
 
   const handleRefresh = () => {
     setIsRefreshing(true)

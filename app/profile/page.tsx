@@ -15,7 +15,6 @@ import { useLanguage } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
-// import { ProtectedRoute } from "@/components/protected-route" // Removed ProtectedRoute import
 
 function ProfilePageContent() {
   const { translations } = useLanguage()
@@ -376,8 +375,6 @@ function ProfilePageContent() {
 
 export default function ProfilePage() {
   return (
-    // <ProtectedRoute> // Removed ProtectedRoute wrapper
-      <ProfilePageContent />
-    // </ProtectedRoute>
+    <ProfilePageContent />
   )
 }

@@ -30,20 +30,12 @@ import { BottomNavigation } from "@/components/bottom-navigation" // Import Bott
 
 export default function LandingPage() {
   const { translations: t, currentLang } = useLanguage() // Destructure currentLang here
-  const { isAuthenticated } = useAuth() // Keep isAuthenticated for potential future use, but it will always be true now
+  const { isAuthenticated } = useAuth()
   const [isVisible, setIsVisible] = useState(false)
-  // const [attemptCount, setAttemptCount] = useState(0) // Removed attemptCount
   const router = useRouter()
 
   useEffect(() => {
-    // No longer redirecting to login, as the app is always "authenticated"
     setIsVisible(true)
-
-    // Removed attemptCount logic
-    // const savedAttempts = localStorage.getItem("krishi-app-attempts")
-    // if (savedAttempts) {
-    //   setAttemptCount(Number.parseInt(savedAttempts, 10))
-    // }
 
     const handleScroll = () => {
       const elements = document.querySelectorAll(".animate-on-scroll")
@@ -59,26 +51,18 @@ export default function LandingPage() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, []) // Removed isAuthenticated, router from dependency array
-
-  // No longer need to return a loading state for authentication
-  // if (!isAuthenticated) {
-  //   return (
-  //     <div className="min-h-screen bg-background flex items-center justify-center">
-  //       <div className="text-center">
-  //         <Leaf className="h-12 w-12 text-primary animate-pulse mx-auto mb-4" />
-  //         <p className="text-muted-foreground">Redirecting to login...</p>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  }, [])
 
   const handleMarketNavigation = () => {
     router.push("/market")
   }
 
   const handleGetStarted = () => {
-    router.push("/dashboard")
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
   }
 
   const scrollToFeatures = () => {

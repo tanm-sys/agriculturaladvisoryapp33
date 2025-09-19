@@ -11,24 +11,9 @@ import { useRouter } from "next/navigation"
 
 export function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  // const [attemptCount, setAttemptCount] = useState(0) // Removed attemptCount
   const { translations } = useLanguage()
-  const { isAuthenticated, user, logout } = useAuth() // Keep logout for compatibility, though not used in UI
+  const { isAuthenticated, user, logout } = useAuth()
   const router = useRouter()
-
-  // Removed attemptCount logic
-  // useEffect(() => {
-  //   const savedAttempts = localStorage.getItem("krishi-app-attempts")
-  //   if (savedAttempts) {
-  //     setAttemptCount(Number.parseInt(savedAttempts, 10))
-  //   }
-  // }, [])
-
-  // const incrementAttempts = () => {
-  //   const newCount = attemptCount + 1
-  //   setAttemptCount(newCount)
-  //   localStorage.setItem("krishi-app-attempts", newCount.toString())
-  // }
 
   const baseMenuItems = [
     {
@@ -46,7 +31,6 @@ export function HamburgerMenu() {
       label: translations.menu?.contact || "Contact",
       href: "/contact",
     },
-    // Government Schemes and Chat Bot are now always visible
     {
       icon: FileText,
       label: translations.menu?.schemes || "Government Schemes",
@@ -59,28 +43,19 @@ export function HamburgerMenu() {
     },
   ]
 
-  // Removed conditionalMenuItems logic, all items are now in baseMenuItems
-  const menuItems = baseMenuItems;
-
   const handleMenuItemClick = (href: string) => {
-    // Removed incrementAttempts logic
-    // if (href === "/schemes" || href === "/chatbot") {
-    //   incrementAttempts()
-    // }
     setIsOpen(false)
   }
 
   const handleLogout = () => {
-    logout() // Call logout for consistency, though no login button
+    logout()
     setIsOpen(false)
-    router.push("/")
   }
 
-  // Removed handleLogin as there is no login page
-  // const handleLogin = () => {
-  //   setIsOpen(false)
-  //   router.push("/login")
-  // }
+  const handleLogin = () => {
+    setIsOpen(false)
+    router.push("/login")
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -99,7 +74,7 @@ export function HamburgerMenu() {
             <p className="text-sm text-muted-foreground mt-1 text-pretty">
               {translations.subtitle || "Your Digital Agricultural Advisor"}
             </p>
-            {isAuthenticated && user && ( // isAuthenticated will always be true now
+            {isAuthenticated && user ? (
               <div className="mt-3 p-3 bg-primary/5 rounded-lg">
                 <p className="text-sm font-medium text-foreground">
                   {user.firstName} {user.lastName}
@@ -108,13 +83,19 @@ export function HamburgerMenu() {
                   {user.village}, {user.district}
                 </p>
               </div>
+            ) : (
+              <div className="mt-3 p-3 bg-muted/50 rounded-lg text-center">
+                <p className="text-sm text-muted-foreground">
+                  {translations.loginDescription || "Please log in to access personalized features."}
+                </p>
+              </div>
             )}
           </div>
 
           {/* Menu Items */}
           <div className="flex-1 p-4">
             <nav className="space-y-2">
-              {menuItems.map((item, index) => (
+              {baseMenuItems.map((item, index) => (
                 <Link key={index} href={item.href} onClick={() => handleMenuItemClick(item.href)}>
                   <Button
                     variant="ghost"
@@ -126,15 +107,25 @@ export function HamburgerMenu() {
                 </Link>
               ))}
 
-              {/* Logout button is now always present, as user is always "authenticated" */}
-              <Button
-                variant="ghost"
-                onClick={handleLogout}
-                className="w-full justify-start gap-3 h-12 text-left hover:bg-red-50 hover:text-red-600 transition-all duration-200"
-              >
-                <LogOut className="h-5 w-5" />
-                <span className="text-balance">{translations.logout || "Logout"}</span>
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  variant="ghost"
+                  onClick={handleLogout}
+                  className="w-full justify-start gap-3 h-12 text-left hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span className="text-balance">{translations.logout || "Logout"}</span>
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  onClick={handleLogin}
+                  className="w-full justify-start gap-3 h-12 text-left hover:bg-primary/10 transition-all duration-200"
+                >
+                  <LogIn className="h-5 w-5" />
+                  <span className="text-balance">{translations.login || "Login"}</span>
+                </Button>
+              )}
             </nav>
           </div>
 

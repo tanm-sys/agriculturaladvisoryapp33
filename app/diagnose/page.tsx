@@ -389,7 +389,7 @@ const locationData: LocationData = {
       Bangalore: ["Bangalore Urban", "Bangalore Rural", "Ramanagara", "Tumkur"],
       Mysore: ["Mysore City", "Mandya", "Hassan", "Kodagu"],
       Hubli: ["Hubli-Dharwad", "Gadag", "Haveri", "Uttara Kannada"],
-      Mangalore: ["Dakshina Kannada", "Udupi", "Kasaragod", "Chikmagalur"],
+      Mangalore: ["Dakshina Kannada", "Udupu", "Kasaragod", "Chikmagalur"],
       Belgaum: ["Belgaum City", "Bagalkot", "Bijapur", "Gulbarga"],
     },
   },
@@ -450,7 +450,7 @@ export default function CropDiagnosis() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const soilCardInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
-  const t = diagnosisLanguages[currentLang]
+  const t = diagnosisLanguages[currentLang] || diagnosisLanguages.en // Fallback to English
 
   const sampleSoilData: Record<keyof SoilDataEntry, SampleSoilData> = {
     ph: { value: 6.8, status: "optimal", range: "6.5-7.5" },
@@ -788,6 +788,7 @@ export default function CropDiagnosis() {
                                 <Label>{t.selectState}</Label>
                                 <Select value={selectedState} onValueChange={setSelectedState}>
                                   <SelectTrigger>
+                                    <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
                                     <SelectValue placeholder={t.selectState} />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -808,6 +809,7 @@ export default function CropDiagnosis() {
                                   disabled={!selectedState}
                                 >
                                   <SelectTrigger>
+                                    <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
                                     <SelectValue placeholder={t.selectDistrict} />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -827,6 +829,7 @@ export default function CropDiagnosis() {
                                 <Label>{t.selectCity}</Label>
                                 <Select value={selectedCity} onValueChange={setSelectedCity} disabled={!selectedDistrict}>
                                   <SelectTrigger>
+                                    <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
                                     <SelectValue placeholder={t.selectCity} />
                                   </SelectTrigger>
                                   <SelectContent>

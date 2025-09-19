@@ -157,6 +157,17 @@ interface GlobalTranslations {
   fillAllFields?: string
   invalidMobile?: string
   dashboard: DashboardLanguageContent // Added dashboard translations
+  login: string
+  signup: string
+  continue: string
+  register: string
+  alreadyHaveAccount: string
+  dontHaveAccount: string
+  loginSuccess: string
+  signupSuccess: string
+  userNotFound: string
+  mobileExists: string
+  selectLanguage: string
 }
 
 interface LanguageContextType {
@@ -321,6 +332,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "Processing your question...",
       speakNow: "Speak now",
     },
+    login: "Login",
+    signup: "Sign Up",
+    continue: "Continue",
+    register: "Register",
+    alreadyHaveAccount: "Already have an account?",
+    dontHaveAccount: "Don't have an account?",
+    loginSuccess: "Login successful! Redirecting...",
+    signupSuccess: "Registration successful! Redirecting...",
+    userNotFound: "User not found. Please sign up.",
+    mobileExists: "Mobile number already registered. Please log in.",
+    selectLanguage: "Select Language",
   },
   hi: {
     title: "कृषिमित्र",
@@ -475,6 +497,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "आपके प्रश्न की प्रक्रिया कर रहा है...",
       speakNow: "अभी बोलें",
     },
+    login: "लॉग इन करें",
+    signup: "साइन अप करें",
+    continue: "जारी रखें",
+    register: "रजिस्टर करें",
+    alreadyHaveAccount: "पहले से ही एक खाता है?",
+    dontHaveAccount: "खाता नहीं है?",
+    loginSuccess: "लॉगिन सफल! रीडायरेक्ट कर रहा है...",
+    signupSuccess: "पंजीकरण सफल! रीडायरेक्ट कर रहा है...",
+    userNotFound: "उपयोगकर्ता नहीं मिला। कृपया साइन अप करें।",
+    mobileExists: "मोबाइल नंबर पहले से पंजीकृत है। कृपया लॉग इन करें।",
+    selectLanguage: "भाषा चुनें",
   },
   mr: {
     title: "कृषीमित्र",
@@ -629,6 +662,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "तुमचा प्रश्न प्रक्रिया करत आहे...",
       speakNow: "आता बोला",
     },
+    login: "लॉग इन करा",
+    signup: "नोंदणी करा",
+    continue: "सुरू ठेवा",
+    register: "नोंदणी करा",
+    alreadyHaveAccount: "आधीच खाते आहे?",
+    dontHaveAccount: "खाते नाही?",
+    loginSuccess: "लॉगिन यशस्वी! पुनर्निर्देशित करत आहे...",
+    signupSuccess: "नोंदणी यशस्वी! पुनर्निर्देशित करत आहे...",
+    userNotFound: "वापरकर्ता सापडला नाही. कृपया नोंदणी करा.",
+    mobileExists: "मोबाइल नंबर आधीच नोंदणीकृत आहे. कृपया लॉग इन करा.",
+    selectLanguage: "भाषा निवडा",
   },
   pa: {
     title: "ਕ੍ਰਿਸ਼ੀਮਿੱਤਰ",
@@ -783,6 +827,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "ਤੁਹਾਡੇ ਸਵਾਲ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰ ਰਿਹਾ ਹੈ...",
       speakNow: "ਹੁਣ ਬੋਲੋ",
     },
+    login: "ਲੌਗ ਇਨ ਕਰੋ",
+    signup: "ਸਾਈਨ ਅੱਪ ਕਰੋ",
+    continue: "ਜਾਰੀ ਰੱਖੋ",
+    register: "ਰਜਿਸਟਰ ਕਰੋ",
+    alreadyHaveAccount: "ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਖਾਤਾ ਹੈ?",
+    dontHaveAccount: "ਖਾਤਾ ਨਹੀਂ ਹੈ?",
+    loginSuccess: "ਲੌਗਇਨ ਸਫਲ! ਰੀਡਾਇਰੈਕਟ ਕਰ ਰਿਹਾ ਹੈ...",
+    signupSuccess: "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਸਫਲ! ਰੀਡਾਇਰੈਕਟ ਕਰ ਰਿਹਾ ਹੈ...",
+    userNotFound: "ਉਪਭੋਗਤਾ ਨਹੀਂ ਮਿਲਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਸਾਈਨ ਅੱਪ ਕਰੋ।",
+    mobileExists: "ਮੋਬਾਈਲ ਨੰਬਰ ਪਹਿਲਾਂ ਹੀ ਰਜਿਸਟਰਡ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਲੌਗ ਇਨ ਕਰੋ।",
+    selectLanguage: "ਭਾਸ਼ਾ ਚੁਣੋ",
   },
   kn: {
     title: "ಕೃಷಿಮಿತ್ರ",
@@ -937,6 +992,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತಿದೆ...",
       speakNow: "ಈಗ ಮಾತನಾಡಿ",
     },
+    login: "ಲಾಗ್ ಇನ್",
+    signup: "ಸೈನ್ ಅಪ್",
+    continue: "ಮುಂದುವರಿಸಿ",
+    register: "ನೋಂದಾಯಿಸಿ",
+    alreadyHaveAccount: "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?",
+    dontHaveAccount: "ಖಾತೆ ಇಲ್ಲವೇ?",
+    loginSuccess: "ಲಾಗ್ ಇನ್ ಯಶಸ್ವಿ! ಮರುನಿರ್ದೇಶಿಸಲಾಗುತ್ತಿದೆ...",
+    signupSuccess: "ನೋಂದಣಿ ಯಶಸ್ವಿ! ಮರುನಿರ್ದೇಶಿಸಲಾಗುತ್ತಿದೆ...",
+    userNotFound: "ಬಳಕೆದಾರರು ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಸೈನ್ ಅಪ್ ಮಾಡಿ.",
+    mobileExists: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಈಗಾಗಲೇ ನೋಂದಾಯಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಲಾಗ್ ಇನ್ ಮಾಡಿ.",
+    selectLanguage: "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ",
   },
   ta: {
     title: "கிருஷிமித்ரா",
@@ -1091,6 +1157,17 @@ const globalTranslations: Record<Language, GlobalTranslations> = {
       voiceProcessing: "உங்கள் கேள்வியை செயலாக்குகிறது...",
       speakNow: "இப்போது பேசுங்கள்",
     },
+    login: "உள்நுழை",
+    signup: "பதிவுசெய்",
+    continue: "தொடரவும்",
+    register: "பதிவுசெய்",
+    alreadyHaveAccount: "ஏற்கனவே கணக்கு உள்ளதா?",
+    dontHaveAccount: "கணக்கு இல்லையா?",
+    loginSuccess: "உள்நுழைவு வெற்றிகரம்! திருப்பி விடப்படுகிறது...",
+    signupSuccess: "பதிவு வெற்றிகரம்! திருப்பி விடப்படுகிறது...",
+    userNotFound: "பயனர் காணப்படவில்லை. பதிவு செய்யவும்.",
+    mobileExists: "மொபைல் எண் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது. உள்நுழையவும்.",
+    selectLanguage: "மொழியைத் தேர்ந்தெடுக்கவும்",
   },
 }
 

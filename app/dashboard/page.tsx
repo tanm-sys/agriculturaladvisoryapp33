@@ -21,12 +21,11 @@ import { useLanguage, Language } from "@/contexts/language-context" // Import La
 import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
-
-// Removed local DashboardLanguageContent interface and dashboardLanguages object
-// as they are now defined and managed in contexts/language-context.tsx
+import { useAuth } from "@/contexts/auth-context" // Import useAuth
 
 export default function Dashboard() {
   const { translations: t } = useLanguage()
+  const { user } = useAuth() // Get user from AuthContext
   const [isListening, setIsListening] = useState(false)
   const [voiceStatus, setVoiceStatus] = useState<"idle" | "listening" | "processing">("idle")
   const [isVisible, setIsVisible] = useState(false)
@@ -102,7 +101,9 @@ export default function Dashboard() {
       <div className={`container mx-auto px-4 py-6 space-y-6 ${isVisible ? "animate-fade-in" : "opacity-0"}`}>
         {/* Welcome Section */}
         <div className="text-center space-y-2 animate-slide-up">
-          <h1 className="text-2xl font-bold text-foreground gradient-text">{t.dashboard.welcome}</h1>
+          <h1 className="text-2xl font-bold text-foreground gradient-text">
+            {t.dashboard.welcome}, {user?.firstName || "Farmer"}!
+          </h1>
           <p className="text-muted-foreground">Today is a good day for farming</p>
         </div>
 

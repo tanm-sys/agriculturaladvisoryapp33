@@ -15,9 +15,11 @@ import { HamburgerMenu } from "@/components/hamburger-menu"
 import { useLanguage } from "@/contexts/language-context"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { useAuth } from "@/contexts/auth-context" // Import useAuth
 
 export default function ContactPage() {
   const { translations } = useLanguage()
+  const { user } = useAuth() // Get user from AuthContext
   const [isVisible, setIsVisible] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -25,8 +27,8 @@ export default function ContactPage() {
   const t = translations.contact
 
   const [formData, setFormData] = useState({
-    fullName: "",
-    village: "",
+    fullName: user ? `${user.firstName} ${user.lastName}` : "",
+    village: user?.village || "",
     query: "",
   })
 
@@ -54,7 +56,14 @@ export default function ContactPage() {
 
   useEffect(() => {
     setIsVisible(true)
-  }, [])
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: `${user.firstName} ${user.lastName}`,
+        village: user.village,
+      }))
+    }
+  }, [user])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,7 +73,7 @@ export default function ContactPage() {
     setTimeout(() => {
       setIsSubmitting(false)
       setShowSuccess(true)
-      setFormData({ fullName: "", village: "", query: "" })
+      setFormData({ fullName: user ? `${user.firstName} ${user.lastName}` : "", village: user?.village || "", query: "" })
 
       // Hide success message after 5 seconds
       setTimeout(() => {

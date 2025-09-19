@@ -2,8 +2,10 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
+import { useRouter } from "next/navigation" // Import useRouter
+import { Language } from "./language-context" // Import Language type
 
-interface User {
+export interface User {
   id: string
   mobileNumber: string
   firstName: string
@@ -12,57 +14,49 @@ interface User {
   district: string
   taluka: string
   village: string
-  language: string
+  language: Language // Use Language type from language-context
 }
 
 interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
-  login: (userData: User) => void // Keeping for compatibility, but won't be used in a login flow
-  logout: () => void // Keeping for compatibility, but won't be used in a login flow
+  login: (userData: User) => void
+  logout: () => void
   updateProfile: (userData: Partial<User>) => void
+  register: (userData: User) => void // Add register function
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Initialize with a dummy user, as there's no login page
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem("agricultural_app_user");
-      if (storedUser) {
-        return JSON.parse(storedUser);
-      }
-    }
-    // Default dummy user if no user is stored
-    return {
-      id: "dummy-user-123",
-      mobileNumber: "9876543210",
-      firstName: "Kisan",
-      lastName: "Mitra",
-      state: "Maharashtra",
-      district: "Solapur",
-      taluka: "Solapur North",
-      village: "Hotgi",
-      language: "en",
-    };
-  });
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Always authenticated
+  const [user, setUser] = useState<User | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
-    // Store dummy user if not already present or if it's the initial dummy
-    if (user && typeof window !== 'undefined') {
-      localStorage.setItem("agricultural_app_user", JSON.stringify(user));
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem("agricultural_app_user")
+      if (storedUser) {
+        const parsedUser: User = JSON.parse(storedUser)
+        setUser(parsedUser)
+        setIsAuthenticated(true)
+      }
     }
-  }, [user]);
+  }, [])
 
-  // Login and logout functions are kept for API compatibility but won't be triggered by a login page
   const login = (userData: User) => {
     setUser(userData)
     setIsAuthenticated(true)
     if (typeof window !== 'undefined') {
       localStorage.setItem("agricultural_app_user", JSON.stringify(userData))
     }
+    router.push("/dashboard") // Redirect to dashboard on login
+  }
+
+  const register = (userData: User) => {
+    // In a real app, this would involve an API call to register the user
+    // For now, we'll just log them in directly after "registration"
+    login(userData)
   }
 
   const logout = () => {
@@ -71,6 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
       localStorage.removeItem("agricultural_app_user")
     }
+    router.push("/login") // Redirect to login on logout
   }
 
   const updateProfile = (updatedData: Partial<User>) => {
@@ -84,7 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, updateProfile }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, updateProfile, register }}>
       {children}
     </AuthContext.Provider>
   )
