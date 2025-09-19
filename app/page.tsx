@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 export default function LandingPage() {
   const { translations: t, currentLang } = useLanguage() // Destructure currentLang here
@@ -82,10 +83,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right side - Language Selector and Notification Bell */}
+          {/* Right side - Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>

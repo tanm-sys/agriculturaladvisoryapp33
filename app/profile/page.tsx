@@ -15,6 +15,7 @@ import { useLanguage } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 function ProfilePageContent() {
   const { translations } = useLanguage()
@@ -118,10 +119,11 @@ function ProfilePageContent() {
             </div>
           </div>
 
-          {/* Language Selector and Notification Bell */}
+          {/* Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>

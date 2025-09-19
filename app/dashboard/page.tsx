@@ -22,6 +22,7 @@ import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { useAuth } from "@/contexts/auth-context" // Import useAuth
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 export default function Dashboard() {
   const { translations: t } = useLanguage()
@@ -90,10 +91,11 @@ export default function Dashboard() {
             <span className="text-lg font-bold text-foreground gradient-text">{t.dashboard.title}</span>
           </div>
 
-          {/* Language Selector and Notification Bell */}
+          {/* Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>

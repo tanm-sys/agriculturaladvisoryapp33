@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 interface SchemeContact {
   phone: string
@@ -311,7 +312,7 @@ const translations: Record<string, SchemesTranslations> = {
         status: "सक्रिय",
         details: "एसएमएएम कृषि मशीनरी और उपकरण खरीदने के लिए वित्तीय सहायता के माध्यम से कृषि यंत्रीकरण को बढ़ावा देता है।",
         benefits: ["40-50% सब्सिडी", "कस्टम हायरिंग सेंटर", "प्रशिक्षण कार्यक्रम", "प्रौद्योगिकी प्रदर्शन"],
-        documents: ["आधार कार्ड", "बैंक खाता", "भूमि रिकॉर्ड", "जाति प्रमाणपत्र (यदि लागू हो)"],
+        documents: ["आधार कार्ड", "बँक खाते", "जमीन नोंदी", "जात प्रमाणपत्र (लागू असल्यास)"],
         contact: {
           phone: "18001801551",
           email: "mechanization@gov.in",
@@ -330,7 +331,7 @@ const translations: Record<string, SchemesTranslations> = {
         details:
           "एनएमएसए जलवायु प्रतिरोधी प्रथाओं, मृदा स्वास्थ्य प्रबंधन और कुशल जल उपयोग के माध्यम से सतत कृषि को बढ़ावा देता है।",
         benefits: ["प्रशिक्षण कार्यक्रम", "प्रौद्योगिकी सहायता", "वित्तीय सहायता", "जलवायु प्रतिरोधी प्रथाएं"],
-        documents: ["आधार कार्ड", "भूमि रिकॉर्ड", "बैंक खाता"],
+        documents: ["आधार कार्ड", "भूमि रिकॉर्ड", "बँक खाते"],
         contact: {
           phone: "18001801551",
           email: "nmsa@gov.in",
@@ -468,7 +469,7 @@ const translations: Record<string, SchemesTranslations> = {
         deadline: "सतत",
         status: "सक्रिय",
         details:
-          "एनएमएसए हवामान प्रतिरोधी पद्धती, मृदा आरोग्य व्यवस्थापन आणि कार्यक्षम पाणी वापराद्वारे शाश्वत कृषीला प्रोत्साहन देते.",
+          "एनएमएसए हवामान प्रतिरोधी पद्धती, मृदा आरोग्य व्यवस्थापन आणि कार्यक्षम पाणी वापराद्वारे शाश्वत कृषीला प्रोत्साहन देते。",
         benefits: ["प्रशिक्षण कार्यक्रम", "तंत्रज्ञान सहाय्य", "आर्थिक सहाय्य", "हवामान प्रतिरोधी पद्धती"],
         documents: ["आधार कार्ड", "जमीन नोंदी", "बँक खाते"],
         contact: {
@@ -610,7 +611,7 @@ const translations: Record<string, SchemesTranslations> = {
         details:
           "ਐਨਐਮਐਸਏ ਜਲਵਾਯੂ ਪ੍ਰਤੀਰੋਧੀ ਅਭਿਆਸਾਂ, ਮਿੱਟੀ ਸਿਹਤ ਪ੍ਰਬੰਧਨ ਅਤੇ ਕੁਸ਼ਲ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਰਾਹੀਂ ਟਿਕਾਊ ਖੇਤੀਬਾੜੀ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਦਾ ਹੈ।",
         benefits: ["ਸਿਖਲਾਈ ਪ੍ਰੋਗਰਾਮ", "ਤਕਨਾਲੋਜੀ ਸਹਾਇਤਾ", "ਵਿੱਤੀ ਸਹਾਇਤਾ", "ਜਲਵਾਯੂ ਪ੍ਰਤੀਰੋਧੀ ਅਭਿਆਸ"],
-        documents: ["ਆਧਾਰ ਕਾਰਡ", "ਜ਼ਮੀਨ ਰਿਕਾਰਡ", "ਬੈਂਕ ਖਾਤਾ"],
+        documents: ["ਆਧਾਰ ਕਾਰਡ", "ਬੈਂਕ ਖਾਤਾ", "ਜ਼ਮੀਨ ਰਿਕਾਰਡ"],
         contact: {
           phone: "18001801551",
           email: "nmsa@gov.in",
@@ -778,10 +779,11 @@ export default function SchemesPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             {t.backToHome}
           </Button>
-          {/* Language Selector and Notification Bell */}
+          {/* Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
 

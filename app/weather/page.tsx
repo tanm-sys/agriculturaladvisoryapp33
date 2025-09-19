@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { LanguageSelector } from "@/components/language-selector"
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { useLanguage } from "@/contexts/language-context" // Import useLanguage
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 interface AlertItem {
   type: string
@@ -287,10 +288,11 @@ export default function WeatherPage() {
             </div>
           </div>
 
-          {/* Language Selector and Notification Bell */}
+          {/* Language Selector, Notification Bell, and Theme Toggle */}
           <div className="flex items-center gap-2">
             <NotificationBell />
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>

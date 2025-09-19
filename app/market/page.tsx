@@ -23,6 +23,7 @@ import { LanguageSelector } from "@/components/language-selector"
 import { BottomNavigation } from "@/components/bottom-navigation" // Import BottomNavigation
 import { NotificationBell } from "@/components/notification-bell" // Import NotificationBell
 import { useLanguage } from "@/contexts/language-context" // Import useLanguage
+import { ThemeToggle } from "@/components/theme-toggle" // Import ThemeToggle
 
 // Language support for market intelligence
 const marketLanguages = {
@@ -485,6 +486,7 @@ export default function MarketIntelligence() {
             <NotificationBell />
             {/* Language Selector */}
             <LanguageSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>
