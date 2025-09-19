@@ -73,8 +73,8 @@ export default function LandingPage() {
   //   )
   // }
 
-  const handleVoiceSearch = () => {
-    router.push("/dashboard")
+  const handleMarketNavigation = () => {
+    router.push("/market")
   }
 
   const handleGetStarted = () => {
@@ -149,10 +149,10 @@ export default function LandingPage() {
               variant="outline"
               size="lg"
               className="text-base px-6 py-4 h-auto min-w-40 bg-transparent transition-all duration-300 hover:shadow-lg hover:scale-105"
-              onClick={handleVoiceSearch}
+              onClick={handleMarketNavigation}
             >
-              <Mic className="mr-2 h-4 w-4" />
-              {t.voiceSearch}
+              <TrendingUp className="mr-2 h-4 w-4" />
+              Market
             </Button>
           </div>
 
@@ -219,7 +219,7 @@ export default function LandingPage() {
           <Card className="text-center p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1 glass-effect">
             <CardHeader className="pb-3">
               <div
-                className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 float-animation"
+                className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center float-animation"
                 style={{ animationDelay: "1s" }}
               >
                 <Cloud className="h-6 w-6 text-primary" />
